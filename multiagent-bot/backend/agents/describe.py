@@ -13,16 +13,12 @@ def get_dataframe_info(df):
     }
     return description
 
-
-
-
 class DataFrameAnalyst:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.base_url = "https://api.deepseek.com/v1/chat/completions"
+        self.base_url = "api_link"
     
     def analyze_dataframe(self, dataframe_info):
-        """Анализирует датафрейм через DeepSeek API"""
         
         # Формируем системный промпт с информацией о данных
         system_prompt = f"""
@@ -65,3 +61,7 @@ class DataFrameAnalyst:
         
         response = requests.post(self.base_url, headers=headers, json=payload)
         return response.json()
+
+analyst = DataFrameAnalyst(api_key)
+result = analyst.analyze_dataframe(dataframe_info)
+print(result['choices'][0]['message']['content'])
