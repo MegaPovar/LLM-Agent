@@ -12,7 +12,7 @@ def web_search_and_filter(query: str, max_results=5, sim_threshold=0.4):
             snippets.append(r["body"])
     if not snippets:
         return []
-    # Семантическая фильтрация по сходству с запросом
+
     q_emb = model.encode([query])
     snippets_emb = model.encode(snippets)
     similarities = cosine_similarity(q_emb, snippets_emb)[0]
@@ -25,7 +25,3 @@ def llm_generate(query, relevant_snippets):
     context = "\n".join(relevant_snippets)
     return f"Вот релевантная информация из интернета по запросу '{query}':\n{context}"
 
-if __name__ == "__main__":
-    query = "What is RAG in machine learning?"
-    filtered_snippets = web_search_and_filter(query)
-    print(llm_generate(query, filtered_snippets))
