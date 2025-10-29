@@ -1,3 +1,3 @@
 import pandas as pd
-df = pd.read_csv('C:/Users/User/Downloads/Sales Transaction v.4aCCCCCCC.csv', sep = ",")
+df = pd.read_csv('path', sep = ",")
 inf = df.info()
