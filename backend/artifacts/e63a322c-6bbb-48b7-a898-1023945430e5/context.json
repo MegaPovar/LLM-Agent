@@ -1,0 +1,264 @@
+{
+  "task_id": "e63a322c-6bbb-48b7-a898-1023945430e5",
+  "prompt": "аааа",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/e63a322c-6bbb-48b7-a898-1023945430e5/20251105_130728_crocodile_dataset%20%281%29%20%281%29.csv",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/e63a322c-6bbb-48b7-a898-1023945430e5",
+    "artifacts": []
+  },
+  "meta": {
+    "shape": [
+      1000,
+      15
+    ]
+  },
+  "metrics": {
+    "null_counts": {
+      "Observation ID": 0,
+      "Common Name": 0,
+      "Scientific Name": 0,
+      "Family": 0,
+      "Genus": 0,
+      "Observed Length (m)": 0,
+      "Observed Weight (kg)": 0,
+      "Age Class": 0,
+      "Sex": 0,
+      "Date of Observation": 0,
+      "Country/Region": 0,
+      "Habitat Type": 0,
+      "Conservation Status": 0,
+      "Observer Name": 0,
+      "Notes": 0
+    },
+    "duplicates": 0,
+    "statistical_tests": {
+      "pearson_correlation_matrix": {
+        "Observation ID": {
+          "Observation ID": 1.0,
+          "Observed Length (m)": 0.007,
+          "Observed Weight (kg)": -0.03
+        },
+        "Observed Length (m)": {
+          "Observation ID": 0.007,
+          "Observed Length (m)": 1.0,
+          "Observed Weight (kg)": 0.843
+        },
+        "Observed Weight (kg)": {
+          "Observation ID": -0.03,
+          "Observed Length (m)": 0.843,
+          "Observed Weight (kg)": 1.0
+        }
+      },
+      "top_correlations": [
+        {
+          "col1": "Observed Length (m)",
+          "col2": "Observed Weight (kg)",
+          "corr_abs": 0.843,
+          "corr": 0.843
+        },
+        {
+          "col1": "Observation ID",
+          "col2": "Observed Weight (kg)",
+          "corr_abs": 0.03,
+          "corr": -0.03
+        },
+        {
+          "col1": "Observation ID",
+          "col2": "Observed Length (m)",
+          "corr_abs": 0.007,
+          "corr": 0.007
+        }
+      ],
+      "t_test": {
+        "numeric_column": "Observation ID",
+        "group_column": "Common Name",
+        "groups": [
+          "Morelet's Crocodile",
+          "American Crocodile"
+        ],
+        "n1": 64,
+        "n2": 66,
+        "t_statistic": 0.4012,
+        "p_value": 0.688977
+      }
+    }
+  },
+  "findings": {
+    "quality": {
+      "high_nul   l_columns": [],
+      "duplicate_rows": 0
+    },
+    "describe": {
+      "shape": [
+        1000,
+        15
+      ],
+      "columns": [
+        "Observation ID",
+        "Common Name",
+        "Scientific Name",
+        "Family",
+        "Genus",
+        "Observed Length (m)",
+        "Observed Weight (kg)",
+        "Age Class",
+        "Sex",
+        "Date of Observation",
+        "Country/Region",
+        "Habitat Type",
+        "Conservation Status",
+        "Observer Name",
+        "Notes"
+      ],
+      "data_types": {
+        "Observation ID": "int64",
+        "Common Name": "object",
+        "Scientific Name": "object",
+        "Family": "object",
+        "Genus": "object",
+        "Observed Length (m)": "float64",
+        "Observed Weight (kg)": "float64",
+        "Age Class": "object",
+        "Sex": "object",
+        "Date of Observation": "object",
+        "Country/Region": "object",
+        "Habitat Type": "object",
+        "Conservation Status": "object",
+        "Observer Name": "object",
+        "Notes": "object"
+      },
+      "missing_values": {
+        "Observation ID": 0,
+        "Common Name": 0,
+        "Scientific Name": 0,
+        "Family": 0,
+        "Genus": 0,
+        "Observed Length (m)": 0,
+        "Observed Weight (kg)": 0,
+        "Age Class": 0,
+        "Sex": 0,
+        "Date of Observation": 0,
+        "Country/Region": 0,
+        "Habitat Type": 0,
+        "Conservation Status": 0,
+        "Observer Name": 0,
+        "Notes": 0
+      },
+      "numeric_columns": [
+        "Observation ID",
+        "Observed Length (m)",
+        "Observed Weight (kg)"
+      ],
+      "categorical_columns": [
+        "Common Name",
+        "Scientific Name",
+        "Family",
+        "Genus",
+        "Age Class",
+        "Sex",
+        "Date of Observation",
+        "Country/Region",
+        "Habitat Type",
+        "Conservation Status",
+        "Observer Name",
+        "Notes"
+      ],
+      "sample_data": [
+        {
+          "Observation ID": 1,
+          "Common Name": "Morelet's Crocodile",
+          "Scientific Name": "Crocodylus moreletii",
+          "Family": "Crocodylidae",
+          "Genus": "Crocodylus",
+          "Observed Length (m)": 1.9,
+          "Observed Weight (kg)": 62.0,
+          "Age Class": "Adult",
+          "Sex": "Male",
+          "Date of Observation": "31-03-2018",
+          "Country/Region": "Belize",
+          "Habitat Type": "Swamps",
+          "Conservation Status": "Least Concern",
+          "Observer Name": "Allison Hill",
+          "Notes": "Cause bill scientist nation opportunity."
+        },
+        {
+          "Observation ID": 2,
+          "Common Name": "American Crocodile",
+          "Scientific Name": "Crocodylus acutus",
+          "Family": "Crocodylidae",
+          "Genus": "Crocodylus",
+          "Observed Length (m)": 4.09,
+          "Observed Weight (kg)": 334.5,
+          "Age Class": "Adult",
+          "Sex": "Male",
+          "Date of Observation": "28-01-2015",
+          "Country/Region": "Venezuela",
+          "Habitat Type": "Mangroves",
+          "Conservation Status": "Vulnerable",
+          "Observer Name": "Brandon Hall",
+          "Notes": "Ago current practice nation determine operation speak according."
+        },
+        {
+          "Observation ID": 3,
+          "Common Name": "Orinoco Crocodile",
+          "Scientific Name": "Crocodylus intermedius",
+          "Family": "Crocodylidae",
+          "Genus": "Crocodylus",
+          "Observed Length (m)": 1.08,
+          "Observed Weight (kg)": 118.2,
+          "Age Class": "Juvenile",
+          "Sex": "Unknown",
+          "Date of Observation": "07-12-2010",
+          "Country/Region": "Venezuela",
+          "Habitat Type": "Flooded Savannas",
+          "Conservation Status": "Critically Endangered",
+          "Observer Name": "Melissa Peterson",
+          "Notes": "Democratic shake bill here grow gas enough analysis least by two."
+        },
+        {
+          "Observation ID": 4,
+          "Common Name": "Morelet's Crocodile",
+          "Scientific Name": "Crocodylus moreletii",
+          "Family": "Crocodylidae",
+          "Genus": "Crocodylus",
+          "Observed Length (m)": 2.42,
+          "Observed Weight (kg)": 90.4,
+          "Age Class": "Adult",
+          "Sex": "Male",
+          "Date of Observation": "01-11-2019",
+          "Country/Region": "Mexico",
+          "Habitat Type": "Rivers",
+          "Conservation Status": "Least Concern",
+          "Observer Name": "Edward Fuller",
+          "Notes": "Officer relate animal direction eye bag do."
+        },
+        {
+          "Observation ID": 5,
+          "Common Name": "Mugger Crocodile (Marsh Crocodile)",
+          "Scientific Name": "Crocodylus palustris",
+          "Family": "Crocodylidae",
+          "Genus": "Crocodylus",
+          "Observed Length (m)": 3.75,
+          "Observed Weight (kg)": 269.4,
+          "Age Class": "Adult",
+          "Sex": "Unknown",
+          "Date of Observation": "15-07-2019",
+          "Country/Region": "India",
+          "Habitat Type": "Rivers",
+          "Conservation Status": "Vulnerable",
+          "Observer Name": "Donald Reid",
+          "Notes": "Class great prove reduce raise author play move each left establish understand read detail."
+        }
+      ]
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Набор данных содержит наблюдения за крокодилами с информацией о биологических характеристиках, месте и времени наблюдения.\n- Включает 1000 записей с 15 параметрами для каждого наблюдения.\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- 1000 строк наблюдений и 15 столбцов характеристик\n- 3 числовых столбца: Observation ID, Observed Length (m), Observed Weight (kg)\n- 12 категориальных столбцов включая Common Name, Scientific Name, Family, Genus, Age Class, Sex\n- Длина крокодилов от 1.08 до 4.09 метров в примере данных\n- Вес от 62.0 до 334.5 кг в примере данных\n- Разные статусы сохранения: Least Concern, Vulnerable, Critically Endangered\n- Разные типы местообитаний: Swamps, Mangroves, Flooded Savannas, Rivers\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Отсутствуют пропущенные значения во всех столбцах (0 missing values)\n- Дата в формате \"день-месяц-год\" может требовать преобразования для анализа временных рядов\n- Категория Sex содержит значение \"Unknown\", что может указывать на неполные данные\n- Отсутствует информация о выбросах и дубликатах в статистике\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Корреляция между длиной и весом разных видов крокодилов\n- Распределение видов по странам/регионам и типам местообитаний\n- Анализ статуса сохранения в зависимости от географического распространения\n- Сезонные паттерны наблюдений по датам\n- Соотношение полов и возрастных классов в популяциях\n- Сравнение размеров особей между видами с разным статусом сохранения"
+  ],
+  "progress": [
+    "quality",
+    "describe",
+    "stat"
+  ],
+  "brief": "Stat: correlations computed, top pairs listed, t-test attempted."
+}

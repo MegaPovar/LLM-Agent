@@ -1,0 +1,256 @@
+{
+  "task_id": "cbe03fc4-eb1a-4922-bedd-d8b2b12be14a",
+  "prompt": ".",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/cbe03fc4-eb1a-4922-bedd-d8b2b12be14a/20251105_174947_BMW%20sales%20data%20%282010-2024%29%20%281%29.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/cbe03fc4-eb1a-4922-bedd-d8b2b12be14a",
+    "artifacts": []
+  },
+  "meta": {
+    "shape": [
+      50000,
+      11
+    ]
+  },
+  "metrics": {
+    "null_counts": {
+      "Model": 0,
+      "Year": 0,
+      "Region": 0,
+      "Color": 0,
+      "Fuel_Type": 0,
+      "Transmission": 0,
+      "Engine_Size_L": 0,
+      "Mileage_KM": 0,
+      "Price_USD": 0,
+      "Sales_Volume": 0,
+      "Sales_Classification": 0
+    },
+    "duplicates": 0,
+    "statistical_tests": {
+      "pearson_correlation_matrix": {
+        "Year": {
+          "Year": 1.0,
+          "Engine_Size_L": -0.002,
+          "Mileage_KM": 0.009,
+          "Price_USD": 0.004,
+          "Sales_Volume": 0.002
+        },
+        "Engine_Size_L": {
+          "Year": -0.002,
+          "Engine_Size_L": 1.0,
+          "Mileage_KM": -0.005,
+          "Price_USD": 0.0,
+          "Sales_Volume": -0.004
+        },
+        "Mileage_KM": {
+          "Year": 0.009,
+          "Engine_Size_L": -0.005,
+          "Mileage_KM": 1.0,
+          "Price_USD": -0.004,
+          "Sales_Volume": 0.001
+        },
+        "Price_USD": {
+          "Year": 0.004,
+          "Engine_Size_L": 0.0,
+          "Mileage_KM": -0.004,
+          "Price_USD": 1.0,
+          "Sales_Volume": 0.0
+        },
+        "Sales_Volume": {
+          "Year": 0.002,
+          "Engine_Size_L": -0.004,
+          "Mileage_KM": 0.001,
+          "Price_USD": 0.0,
+          "Sales_Volume": 1.0
+        }
+      },
+      "top_correlations": [
+        {
+          "col1": "Year",
+          "col2": "Mileage_KM",
+          "corr_abs": 0.009,
+          "corr": 0.009
+        },
+        {
+          "col1": "Engine_Size_L",
+          "col2": "Mileage_KM",
+          "corr_abs": 0.005,
+          "corr": -0.005
+        },
+        {
+          "col1": "Year",
+          "col2": "Price_USD",
+          "corr_abs": 0.004,
+          "corr": 0.004
+        },
+        {
+          "col1": "Engine_Size_L",
+          "col2": "Sales_Volume",
+          "corr_abs": 0.004,
+          "corr": -0.004
+        },
+        {
+          "col1": "Mileage_KM",
+          "col2": "Price_USD",
+          "corr_abs": 0.004,
+          "corr": -0.004
+        }
+      ],
+      "t_test": {
+        "numeric_column": "Year",
+        "group_column": "Model",
+        "groups": [
+          "5 Series",
+          "i8"
+        ],
+        "n1": 4592,
+        "n2": 4606,
+        "t_statistic": 0.8802,
+        "p_value": 0.37875
+      }
+    }
+  },
+  "findings": {
+    "quality": {
+      "high_nul   l_columns": [],
+      "duplicate_rows": 0
+    },
+    "describe": {
+      "shape": [
+        50000,
+        11
+      ],
+      "columns": [
+        "Model",
+        "Year",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume",
+        "Sales_Classification"
+      ],
+      "data_types": {
+        "Model": "object",
+        "Year": "int64",
+        "Region": "object",
+        "Color": "object",
+        "Fuel_Type": "object",
+        "Transmission": "object",
+        "Engine_Size_L": "float64",
+        "Mileage_KM": "int64",
+        "Price_USD": "int64",
+        "Sales_Volume": "int64",
+        "Sales_Classification": "object"
+      },
+      "missing_values": {
+        "Model": 0,
+        "Year": 0,
+        "Region": 0,
+        "Color": 0,
+        "Fuel_Type": 0,
+        "Transmission": 0,
+        "Engine_Size_L": 0,
+        "Mileage_KM": 0,
+        "Price_USD": 0,
+        "Sales_Volume": 0,
+        "Sales_Classification": 0
+      },
+      "numeric_columns": [
+        "Year",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume"
+      ],
+      "categorical_columns": [
+        "Model",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Sales_Classification"
+      ],
+      "sample_data": [
+        {
+          "Model": "5 Series",
+          "Year": 2016,
+          "Region": "Asia",
+          "Color": "Red",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Manual",
+          "Engine_Size_L": 3.5,
+          "Mileage_KM": 151748,
+          "Price_USD": 98740,
+          "Sales_Volume": 8300,
+          "Sales_Classification": "High"
+        },
+        {
+          "Model": "i8",
+          "Year": 2013,
+          "Region": "North America",
+          "Color": "Red",
+          "Fuel_Type": "Hybrid",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.6,
+          "Mileage_KM": 121671,
+          "Price_USD": 79219,
+          "Sales_Volume": 3428,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "5 Series",
+          "Year": 2022,
+          "Region": "North America",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 4.5,
+          "Mileage_KM": 10991,
+          "Price_USD": 113265,
+          "Sales_Volume": 6994,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "X3",
+          "Year": 2024,
+          "Region": "Middle East",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.7,
+          "Mileage_KM": 27255,
+          "Price_USD": 60971,
+          "Sales_Volume": 4047,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "7 Series",
+          "Year": 2020,
+          "Region": "South America",
+          "Color": "Black",
+          "Fuel_Type": "Diesel",
+          "Transmission": "Manual",
+          "Engine_Size_L": 2.1,
+          "Mileage_KM": 122131,
+          "Price_USD": 49898,
+          "Sales_Volume": 3080,
+          "Sales_Classification": "Low"
+        }
+      ]
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию о продажах автомобилей BMW с характеристиками моделей и показателями продаж.\n- Включает 50 000 записей с 11 параметрами по каждой позиции.\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- 50 000 строк и 11 столбцов данных\n- 5 числовых столбцов: Year, Engine_Size_L, Mileage_KM, Price_USD, Sales_Volume\n- 6 категориальных столбцов: Model, Region, Color, Fuel_Type, Transmission, Sales_Classification\n- Диапазон годов выпуска: от 2013 до 2024 (по примерам)\n- Диапазон цен: от 49 898 до 113 265 USD (по примерам)\n- Диапазон пробега: от 10 991 до 151 748 км (по примерам)\n- Классификация продаж: High и Low (по примерам)\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Отсутствуют пропущенные значения во всех столбцах\n- Нет информации о выбросах в данных\n- Нет данных о дубликатах записей\n- Неизвестно о наличии странных категорий или несоответствий\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние характеристик автомобиля на цену\n- Распределение продаж по регионам и моделям\n- Зависимость объема продаж от классификации\n- Корреляция между пробегом и ценой\n- Анализ популярности типов трансмиссии и топлива\n- Сезонность или временные тренды продаж"
+  ],
+  "progress": [
+    "quality",
+    "describe",
+    "stat"
+  ],
+  "brief": "Stat: correlations computed, top pairs listed, t-test attempted."
+}

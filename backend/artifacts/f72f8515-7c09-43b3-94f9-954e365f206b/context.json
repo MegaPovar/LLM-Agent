@@ -1,0 +1,194 @@
+{
+  "task_id": "f72f8515-7c09-43b3-94f9-954e365f206b",
+  "prompt": ".",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/f72f8515-7c09-43b3-94f9-954e365f206b/20251105_180013_student_exam_scores.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/f72f8515-7c09-43b3-94f9-954e365f206b",
+    "artifacts": []
+  },
+  "meta": {
+    "shape": [
+      200,
+      6
+    ]
+  },
+  "metrics": {
+    "null_counts": {
+      "student_id": 0,
+      "hours_studied": 0,
+      "sleep_hours": 0,
+      "attendance_percent": 0,
+      "previous_scores": 0,
+      "exam_score": 0
+    },
+    "duplicates": 0,
+    "statistical_tests": {
+      "pearson_correlation_matrix": {
+        "hours_studied": {
+          "hours_studied": 1.0,
+          "sleep_hours": 0.078,
+          "attendance_percent": -0.031,
+          "previous_scores": 0.069,
+          "exam_score": 0.777
+        },
+        "sleep_hours": {
+          "hours_studied": 0.078,
+          "sleep_hours": 1.0,
+          "attendance_percent": 0.001,
+          "previous_scores": -0.194,
+          "exam_score": 0.188
+        },
+        "attendance_percent": {
+          "hours_studied": -0.031,
+          "sleep_hours": 0.001,
+          "attendance_percent": 1.0,
+          "previous_scores": 0.052,
+          "exam_score": 0.226
+        },
+        "previous_scores": {
+          "hours_studied": 0.069,
+          "sleep_hours": -0.194,
+          "attendance_percent": 0.052,
+          "previous_scores": 1.0,
+          "exam_score": 0.431
+        },
+        "exam_score": {
+          "hours_studied": 0.777,
+          "sleep_hours": 0.188,
+          "attendance_percent": 0.226,
+          "previous_scores": 0.431,
+          "exam_score": 1.0
+        }
+      },
+      "top_correlations": [
+        {
+          "col1": "hours_studied",
+          "col2": "exam_score",
+          "corr_abs": 0.777,
+          "corr": 0.777
+        },
+        {
+          "col1": "previous_scores",
+          "col2": "exam_score",
+          "corr_abs": 0.431,
+          "corr": 0.431
+        },
+        {
+          "col1": "attendance_percent",
+          "col2": "exam_score",
+          "corr_abs": 0.226,
+          "corr": 0.226
+        },
+        {
+          "col1": "sleep_hours",
+          "col2": "previous_scores",
+          "corr_abs": 0.194,
+          "corr": -0.194
+        },
+        {
+          "col1": "sleep_hours",
+          "col2": "exam_score",
+          "corr_abs": 0.188,
+          "corr": 0.188
+        }
+      ]
+    }
+  },
+  "findings": {
+    "quality": {
+      "high_nul   l_columns": [],
+      "duplicate_rows": 0
+    },
+    "describe": {
+      "shape": [
+        200,
+        6
+      ],
+      "columns": [
+        "student_id",
+        "hours_studied",
+        "sleep_hours",
+        "attendance_percent",
+        "previous_scores",
+        "exam_score"
+      ],
+      "data_types": {
+        "student_id": "object",
+        "hours_studied": "float64",
+        "sleep_hours": "float64",
+        "attendance_percent": "float64",
+        "previous_scores": "int64",
+        "exam_score": "float64"
+      },
+      "missing_values": {
+        "student_id": 0,
+        "hours_studied": 0,
+        "sleep_hours": 0,
+        "attendance_percent": 0,
+        "previous_scores": 0,
+        "exam_score": 0
+      },
+      "numeric_columns": [
+        "hours_studied",
+        "sleep_hours",
+        "attendance_percent",
+        "previous_scores",
+        "exam_score"
+      ],
+      "categorical_columns": [
+        "student_id"
+      ],
+      "sample_data": [
+        {
+          "student_id": "S001",
+          "hours_studied": 8.0,
+          "sleep_hours": 8.8,
+          "attendance_percent": 72.1,
+          "previous_scores": 45,
+          "exam_score": 30.2
+        },
+        {
+          "student_id": "S002",
+          "hours_studied": 1.3,
+          "sleep_hours": 8.6,
+          "attendance_percent": 60.7,
+          "previous_scores": 55,
+          "exam_score": 25.0
+        },
+        {
+          "student_id": "S003",
+          "hours_studied": 4.0,
+          "sleep_hours": 8.2,
+          "attendance_percent": 73.7,
+          "previous_scores": 86,
+          "exam_score": 35.8
+        },
+        {
+          "student_id": "S004",
+          "hours_studied": 3.5,
+          "sleep_hours": 4.8,
+          "attendance_percent": 95.1,
+          "previous_scores": 66,
+          "exam_score": 34.0
+        },
+        {
+          "student_id": "S005",
+          "hours_studied": 9.1,
+          "sleep_hours": 6.4,
+          "attendance_percent": 89.8,
+          "previous_scores": 71,
+          "exam_score": 40.3
+        }
+      ]
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию об успеваемости студентов, включая время учебы, сон, посещаемость и результаты экзаменов.\n- Набор данных состоит из 200 строк и 6 столбцов с различными показателями учебной деятельности.\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- 200 наблюдений и 6 переменных\n- 5 числовых столбцов: hours_studied, sleep_hours, attendance_percent, previous_scores, exam_score\n- 1 категориальный столбец: student_id\n- Отсутствуют пропущенные значения во всех столбцах\n- Примеры данных показывают: hours_studied от 1.3 до 9.1 часов, sleep_hours от 4.8 до 8.8 часов, attendance_percent от 60.7% до 95.1%, previous_scores от 45 до 86 баллов, exam_score от 25.0 до 40.3 баллов\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Отсутствуют пропущенные значения (0 во всех столбцах)\n- Неизвестно наличие выбросов в данных\n- Неизвестно наличие дубликатов записей\n- Неизвестно соответствие данных реальным диапазонам значений\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние часов учебы и сна на результаты экзаменов\n- Корреляцию между предыдущими оценками и текущими экзаменационными баллами\n- Зависимость экзаменационных результатов от процента посещаемости\n- Сравнение эффективности разных комбинаций факторов учебы\n- Поиск оптимального баланса между временем учебы и отдыха\n- Анализ взаимосвязей между всеми числовыми переменными"
+  ],
+  "progress": [
+    "quality",
+    "describe",
+    "stat"
+  ],
+  "brief": "Stat: correlations computed, top pairs listed, t-test attempted."
+}
