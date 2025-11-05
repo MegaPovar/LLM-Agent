@@ -1,0 +1,53 @@
+{
+  "task_id": "5f126355-de7e-415d-964c-3d4f3baf3b73",
+  "prompt": "найди зависимости веса и вида крокодилов",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/5f126355-de7e-415d-964c-3d4f3baf3b73/20251105_115618_crocodile_dataset%20%281%29.csv",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/5f126355-de7e-415d-964c-3d4f3baf3b73",
+    "artifacts": []
+  },
+  "meta": {
+    "shape": [
+      1000,
+      15
+    ]
+  },
+  "metrics": {
+    "null_counts": {
+      "Observation ID": 0,
+      "Common Name": 0,
+      "Scientific Name": 0,
+      "Family": 0,
+      "Genus": 0,
+      "Observed Length (m)": 0,
+      "Observed Weight (kg)": 0,
+      "Age Class": 0,
+      "Sex": 0,
+      "Date of Observation": 0,
+      "Country/Region": 0,
+      "Habitat Type": 0,
+      "Conservation Status": 0,
+      "Observer Name": 0,
+      "Notes": 0
+    },
+    "duplicates": 0,
+    "statistical_tests": {
+      "pearson_correlation": {
+        "Observation ID": {
+          "Observation ID": 1.0,
+          "Observed Length (m)": 0.007,
+          "Observed Weight (kg)": -0.03
+        },
+        "Observed Length (m)": {
+          "Observation ID": 0.007,
+          "Observed Length (m)": 1.0,
+          "Observed Weight (kg)": 0.843
+        },
+        "Observed Weight (kg)": {
+          "Observation ID": -0.03,
+          "Observed Length (m)": 0.843,
+          "Observed Weight (kg)": 1.0
+        }
+      },
+      "top_correlations": {
+        

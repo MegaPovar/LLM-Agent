@@ -21,10 +21,10 @@ UPLOAD_DIR.mkdir(exist_ok=True, parents=True)
 ARTIFACTS_DIR.mkdir(exist_ok=True, parents=True)
 
 # --- Agents ---
-from agents.quality import QualityAgent
-from agents.describe import DescribeAgent
-from agents.stat import StatAgent
-# подключи остальные при появлении:
+from .agents.quality import QualityAgent
+from .agents.describe import DescribeAgent
+from .agents.stat import StatAgent
+# from .agents.research import ResearchAgent
 # from agents.research import ResearchAgent
 # from agents.eval import EvalAgent
 # from agents.viz import VizAgent

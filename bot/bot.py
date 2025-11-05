@@ -1,5 +1,10 @@
 # bot/bot.py
-import asyncio
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Явно подгружаем .env из корня проекта
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
+
 import json
 import os
 from pathlib import Path
@@ -211,11 +216,12 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await msg.reply_text("Это текст. Чтобы привязать его как описание, сначала пришли файл.")
 
-# ------------ entrypoint ------------
+# ------------ entrypoint (синхронный) ------------
 
-async def main():
+def main():
     if not BOT_TOKEN:
         raise RuntimeError("Установи переменную окружения BOT_TOKEN")
+
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start_cmd))
@@ -224,7 +230,11 @@ async def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
 
     print("Bot is running…")
-    await app.run_polling(close_loop=False)
+    # run_polling сам создаёт/управляет event loop
+    app.run_polling(
+        allowed_updates=Update.ALL_TYPES,
+        drop_pending_updates=True,
+    )
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

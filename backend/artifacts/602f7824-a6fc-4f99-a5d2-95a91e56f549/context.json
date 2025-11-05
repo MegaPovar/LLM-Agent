@@ -1,0 +1,36 @@
+{
+  "task_id": "602f7824-a6fc-4f99-a5d2-95a91e56f549",
+  "prompt": "найди зависимость",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/602f7824-a6fc-4f99-a5d2-95a91e56f549/sales.csv",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/602f7824-a6fc-4f99-a5d2-95a91e56f549",
+    "artifacts": []
+  },
+  "meta": {
+    "shape": [
+      10,
+      5
+    ]
+  },
+  "metrics": {
+    "null_counts": {
+      "region": 0,
+      "product": 0,
+      "month": 0,
+      "sales": 0,
+      "profit": 0
+    },
+    "duplicates": 0,
+    "statistical_tests": {
+      "pearson_correlation": {
+        "sales": {
+          "sales": 1.0,
+          "profit": 0.974
+        },
+        "profit": {
+          "sales": 0.974,
+          "profit": 1.0
+        }
+      },
+      "top_correlations": {
+        
