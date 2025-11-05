@@ -1,0 +1,46 @@
+{
+  "task_id": "1d55d230-f345-4ea3-9449-d82aacc0cc2a",
+  "prompt": "найди зависимоть веса крокодилов по их виду",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/1d55d230-f345-4ea3-9449-d82aacc0cc2a/20251105_124558_crocodile_dataset%20%281%29%20%281%29%20%281%29.csv",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/1d55d230-f345-4ea3-9449-d82aacc0cc2a",
+    "artifacts": []
+  },
+  "meta": {
+    "shape": [
+      1000,
+      15
+    ]
+  },
+  "metrics": {
+    "null_counts": {
+      "Observation ID": 0,
+      "Common Name": 0,
+      "Scientific Name": 0,
+      "Family": 0,
+      "Genus": 0,
+      "Observed Length (m)": 0,
+      "Observed Weight (kg)": 0,
+      "Age Class": 0,
+      "Sex": 0,
+      "Date of Observation": 0,
+      "Country/Region": 0,
+      "Habitat Type": 0,
+      "Conservation Status": 0,
+      "Observer Name": 0,
+      "Notes": 0
+    },
+    "duplicates": 0
+  },
+  "findings": {
+    "quality": {
+      "high_nul   l_columns": [],
+      "duplicate_rows": 0
+    }
+  },
+  "insights": [],
+  "progress": [
+    "quality"
+  ],
+  "brief": "Quality check: 0 columns have >30% missing values."
+}
