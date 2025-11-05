@@ -1,4 +1,3 @@
-# backend/main.py
 from fastapi import FastAPI, UploadFile, Form, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
