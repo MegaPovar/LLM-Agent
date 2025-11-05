@@ -1,5 +1,6 @@
 import asyncio
 import json
+import aiohttp
 import os
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -8,6 +9,8 @@ from telegram import Update, Message, File
 from telegram.ext import (
     Application, CommandHandler, MessageHandler, ContextTypes, filters
 )
+
+BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")  # FastAPI
 
 # Папки
 BASE_DIR = Path(__file__).parent
@@ -21,6 +24,67 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 PENDING_DESC = {}
 
 DESC_TIMEOUT = timedelta(minutes=5)  # сколько ждём текст-описание после файла
+
+async def backend_start(file_path: Path, prompt: str) -> str:
+    """
+    Отправляет файл и промпт на /start. Возвращает task_id.
+    """
+    url = f"{BACKEND_URL}/start"
+    data = aiohttp.FormData()
+    data.add_field("prompt", prompt or "")
+    data.add_field(
+        "file",
+        open(file_path, "rb"),
+        filename=file_path.name,
+        content_type="application/octet-stream",
+    )
+    async with aiohttp.ClientSession() as sess:
+        async with sess.post(url, data=data, timeout=120) as resp:
+            resp.raise_for_status()
+            js = await resp.json()
+            return js["task_id"]
+
+async def backend_run_all(task_id: str) -> None:
+    url = f"{BACKEND_URL}/run-all"
+    async with aiohttp.ClientSession() as sess:
+        async with sess.post(url, json={"task_id": task_id}, timeout=600) as resp:
+            resp.raise_for_status()
+
+async def backend_status(task_id: str) -> dict:
+    url = f"{BACKEND_URL}/status/{task_id}"
+    async with aiohttp.ClientSession() as sess:
+        async with sess.get(url, timeout=60) as resp:
+            resp.raise_for_status()
+            return await resp.json()
+
+async def backend_download_artifact(task_id: str, filename: str) -> bytes:
+    url = f"{BACKEND_URL}/file/{task_id}/{filename}"
+    async with aiohttp.ClientSession() as sess:
+        async with sess.get(url, timeout=120) as resp:
+            resp.raise_for_status()
+            return await resp.read()
+        
+async def process_and_reply(chat_id: int, file_path: Path, prompt: str, context: ContextTypes.DEFAULT_TYPE):
+    # 1) создаём задачу на бэке
+    task_id = await backend_start(file_path, prompt)
+
+    # 2) запускаем весь пайплайн
+    await backend_run_all(task_id)
+
+    # 3) забираем статус/контекст
+    ctx = await backend_status(task_id)
+    insights = ctx.get("insights", [])
+    artifacts = ctx.get("files", {}).get("artifacts", [])
+
+    # 4) краткий итог
+    summary = "\n".join([i for i in insights if i and isinstance(i, str)]) or "Готово. Инсайты сформированы."
+    await context.bot.send_message(chat_id, f"✅ Анализ завершён.\n\n{summary[:3500]}")
+
+    # 5) артефакты (если есть)
+    for art_path in artifacts[:10]:  # не спамим слишком много
+        filename = Path(art_path).name
+        data = await backend_download_artifact(task_id, filename)
+        await context.bot.send_document(chat_id, document=data, filename=filename)
 
 def write_jsonl(record: dict, path: Path = DATA_DIR / "uploads.jsonl"):
     with path.open("a", encoding="utf-8") as f:
