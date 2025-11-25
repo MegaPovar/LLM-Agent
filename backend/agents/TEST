@@ -1,9 +1,8 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-from scipy.stats import chi2_contingency, f_oneway, shapiro, normaltest
-import json
-from typing import Dict, List, Any, Optional
+from scipy.stats import chi2_contingency, f_oneway, shapiro
+from typing import Dict, Any, Optional
 from llama_index.core.tools import FunctionTool
 from llama_index.core.agent import FunctionCallingAgent
 from llama_index.llms.openai import OpenAI
@@ -24,13 +23,11 @@ class StatAgent(AgentBase):
             )
 
     def run_ttest(self, df: pd.DataFrame, num_col: str, cat_col: str) -> Dict[str, Any]:
-        """T-test для числовой переменной между двумя группами"""
         try:
             groups = df[cat_col].dropna().unique()
             if len(groups) < 2:
                 return {"error": f"Need at least 2 groups in {cat_col}, found {len(groups)}"}
             
-            # Берем две самые большие группы
             group_counts = df[cat_col].value_counts()
             top_groups = group_counts.head(2).index.tolist()
             
@@ -57,10 +54,8 @@ class StatAgent(AgentBase):
             return {"error": str(e)}
 
     def run_chi_square(self, df: pd.DataFrame, cat_col1: str, cat_col2: str) -> Dict[str, Any]:
-        """Chi-square test для двух категориальных переменных"""
         try:
             contingency_table = pd.crosstab(df[cat_col1], df[cat_col2])
-            
             if contingency_table.size == 0 or (contingency_table == 0).all().all():
                 return {"error": "No data in contingency table"}
             
@@ -79,7 +74,6 @@ class StatAgent(AgentBase):
             return {"error": str(e)}
 
     def run_anova(self, df: pd.DataFrame, num_col: str, cat_col: str) -> Dict[str, Any]:
-        """ANOVA test для числовой переменной между несколькими группами"""
         try:
             groups = df[cat_col].dropna().unique()
             if len(groups) < 2:
@@ -87,9 +81,9 @@ class StatAgent(AgentBase):
             
             group_data = []
             for group in groups:
-                group_values = df[df[cat_col] == group][num_col].dropna()
-                if len(group_values) >= 2:  # Нужно хотя бы 2 наблюдения на группу
-                    group_data.append(group_values)
+                gv = df[df[cat_col] == group][num_col].dropna()
+                if len(gv) >= 2:
+                    group_data.append(gv)
             
             if len(group_data) < 2:
                 return {"error": "Not enough groups with sufficient data"}
@@ -109,12 +103,11 @@ class StatAgent(AgentBase):
             return {"error": str(e)}
 
     def run_shapiro_wilk(self, df: pd.DataFrame, num_col: str) -> Dict[str, Any]:
-        """Shapiro-Wilk test на нормальность распределения"""
         try:
             data = df[num_col].dropna()
             if len(data) < 3:
                 return {"error": f"Need at least 3 samples, got {len(data)}"}
-            if len(data) > 5000:  # Shapiro-Wilk имеет ограничения по размеру
+            if len(data) > 5000:
                 data = data.sample(5000, random_state=42)
             
             stat, p_value = shapiro(data)
@@ -130,106 +123,71 @@ class StatAgent(AgentBase):
         except Exception as e:
             return {"error": str(e)}
 
-    def run_bootstrap_ci(self, df: pd.DataFrame, num_col: str, n_bootstrap: int = 1000) -> Dict[str, Any]:
-        """Bootstrap confidence intervals для среднего"""
-        try:
-            data = df[num_col].dropna()
-            if len(data) < 10:
-                return {"error": f"Need at least 10 samples, got {len(data)}"}
-            
-            bootstrap_means = []
-            for _ in range(n_bootstrap):
-                sample = np.random.choice(data, size=len(data), replace=True)
-                bootstrap_means.append(np.mean(sample))
-            
-            ci_lower = np.percentile(bootstrap_means, 2.5)
-            ci_upper = np.percentile(bootstrap_means, 97.5)
-            
-            return {
-                "test": "bootstrap_confidence_interval",
-                "column": num_col,
-                "mean": round(float(np.mean(data)), 4),
-                "ci_lower": round(float(ci_lower), 4),
-                "ci_upper": round(float(ci_upper), 4),
-                "confidence_level": 0.95,
-                "bootstrap_samples": n_bootstrap,
-                "sample_size": len(data)
-            }
-        except Exception as e:
-            return {"error": str(e)}
-
     def run_all_statistical_tests(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """Запуск всех статистических тестов на подходящих колонках"""
         results = {}
         
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
         categorical_cols = df.select_dtypes(exclude=[np.number]).columns.tolist()
         
-        # 1. Тесты на нормальность для всех числовых колонок
+        # Normality
         results["normality_tests"] = {}
         for col in numeric_cols:
             results["normality_tests"][col] = self.run_shapiro_wilk(df, col)
         
-        # 2. Bootstrap CI для числовых колонок
-        results["bootstrap_ci"] = {}
-        for col in numeric_cols:
-            results["bootstrap_ci"][col] = self.run_bootstrap_ci(df, col)
-        
-        # 3. T-tests для пар числовая-категориальная (первые 3 комбинации)
+        # T-tests
         results["t_tests"] = []
-        for num_col in numeric_cols[:3]:  # Ограничиваем чтобы не слишком много
+        for num_col in numeric_cols[:3]:
             for cat_col in categorical_cols[:2]:
                 if len(df[cat_col].dropna().unique()) >= 2:
-                    test_result = self.run_ttest(df, num_col, cat_col)
-                    test_result["combination"] = f"{num_col} ~ {cat_col}"
-                    results["t_tests"].append(test_result)
-        
-        # 4. ANOVA tests
+                    r = self.run_ttest(df, num_col, cat_col)
+                    r["combination"] = f"{num_col} ~ {cat_col}"
+                    results["t_tests"].append(r)
+
+        # ANOVA
         results["anova_tests"] = []
         for num_col in numeric_cols[:2]:
             for cat_col in categorical_cols[:2]:
                 if len(df[cat_col].dropna().unique()) >= 2:
-                    test_result = self.run_anova(df, num_col, cat_col)
-                    test_result["combination"] = f"{num_col} ~ {cat_col}"
-                    results["anova_tests"].append(test_result)
-        
-        # 5. Chi-square tests для категориальных пар
+                    r = self.run_anova(df, num_col, cat_col)
+                    r["combination"] = f"{num_col} ~ {cat_col}"
+                    results["anova_tests"].append(r)
+
+        # Chi-square
         results["chi_square_tests"] = []
-        for i, cat_col1 in enumerate(categorical_cols[:3]):
-            for cat_col2 in categorical_cols[i+1:i+3]:  # Избегаем дублирования
-                if cat_col1 != cat_col2:
-                    test_result = self.run_chi_square(df, cat_col1, cat_col2)
-                    test_result["combination"] = f"{cat_col1} × {cat_col2}"
-                    results["chi_square_tests"].append(test_result)
-        
-        # 6. Корреляции Пирсона (существующая функциональность)
+        for i, c1 in enumerate(categorical_cols[:3]):
+            for c2 in categorical_cols[i+1:i+3]:
+                r = self.run_chi_square(df, c1, c2)
+                r["combination"] = f"{c1} × {c2}"
+                results["chi_square_tests"].append(r)
+
+        # Pearson correlation
         if len(numeric_cols) >= 2:
             corr_matrix = df[numeric_cols].corr().round(3)
             results["pearson_correlation_matrix"] = corr_matrix.to_dict()
-            
-            # Top correlations
+
             mask = np.triu(np.ones(corr_matrix.shape), k=1).astype(bool)
             corr_upper = corr_matrix.where(mask)
             flat = corr_upper.stack().abs().sort_values(ascending=False)
-            
-            top_correlations = []
-            for (c1, c2), val in flat.head(5).items():
-                top_correlations.append({
-                    "col1": c1, "col2": c2,
-                    "corr_abs": float(val), "corr": float(corr_matrix.loc[c1, c2])
-                })
-            results["top_correlations"] = top_correlations
-        
+
+            results["top_correlations"] = [
+                {
+                    "col1": c1,
+                    "col2": c2,
+                    "corr_abs": float(val),
+                    "corr": float(corr_matrix.loc[c1, c2])
+                }
+                for (c1, c2), val in flat.head(5).items()
+            ]
+        else:
+            results["pearson_correlation_matrix"] = {}
+            results["top_correlations"] = []
+
         return results
 
     def generate_statistical_summary(self, test_results: Dict[str, Any]) -> str:
-        """Генерация текстового отчета о статистических тестах через LLM"""
         if not self.llm:
-            # Fallback без LLM
             return self._generate_fallback_summary(test_results)
-        
         try:
-            # Создаем инструменты для function calling
             tools = [
                 FunctionTool.from_defaults(
                     fn=lambda: test_results,
@@ -241,93 +199,74 @@ class StatAgent(AgentBase):
             agent = FunctionCallingAgent.from_tools(
                 tools, 
                 llm=self.llm, 
-                system_prompt="""Ты - статистик-аналитик. Проанализируй результаты статистических тестов и создай краткий, но информативный отчет на русском языке.
-                
-Структура отчета:
-1. ОСНОВНЫЕ СТАТИСТИЧЕСКИЕ ВЫВОДЫ
-2. ЗНАЧИМЫЕ ЗАВИСИМОСТИ  
-3. РАСПРЕДЕЛЕНИЯ ДАННЫХ
-4. ДОВЕРИТЕЛЬНЫЕ ИНТЕРВАЛЫ
-5. РЕКОМЕНДАЦИИ ПО ДАЛЬНЕЙШЕМУ АНАЛИЗУ
-
-Будь конкретен, указывай p-values и статистики где это важно."""
+                system_prompt=(
+                    "Ты — статистик-аналитик. Проанализируй результаты статистических тестов и создай краткий "
+                    "отчет на русском языке."
+                )
             )
             
-            response = agent.chat("Проанализируй результаты статистических тестов и создай структурированный отчет на русском языке. Укажи ключевые находки и их статистическую значимость.")
-            return str(response)
-            
-        except Exception as e:
+            return str(agent.chat("Сформируй отчет."))
+        except Exception:
             return self._generate_fallback_summary(test_results)
 
     def _generate_fallback_summary(self, test_results: Dict[str, Any]) -> str:
-        """Резервный метод генерации отчета без LLM"""
-        summary_parts = ["СТАТИСТИЧЕСКИЙ АНАЛИЗ ДАННЫХ\n"]
+        summary = ["СТАТИСТИЧЕСКИЙ АНАЛИЗ ДАННЫХ\n"]
         
-        # Нормальность распределений
-        normal_cols = []
-        not_normal_cols = []
-        for col, result in test_results.get("normality_tests", {}).items():
-            if "interpretation" in result:
-                if result["interpretation"] == "normal":
-                    normal_cols.append(col)
-                else:
-                    not_normal_cols.append(col)
-        
-        if normal_cols:
-            summary_parts.append(f"Нормальное распределение: {', '.join(normal_cols)}")
-        if not_normal_cols:
-            summary_parts.append(f"Ненормальное распределение: {', '.join(not_normal_cols)}")
-        
-        # Значимые t-тесты
-        sig_ttests = []
-        for test in test_results.get("t_tests", []):
-            if test.get("p_value", 1) < 0.05 and "error" not in test:
-                sig_ttests.append(f"{test['combination']} (p={test['p_value']})")
-        
-        if sig_ttests:
-            summary_parts.append(f"Значимые различия (t-test): {', '.join(sig_ttests)}")
-        
-        # Значимые ANOVA
-        sig_anova = []
-        for test in test_results.get("anova_tests", []):
-            if test.get("p_value", 1) < 0.05 and "error" not in test:
-                sig_anova.append(f"{test['combination']} (p={test['p_value']})")
-        
-        if sig_anova:
-            summary_parts.append(f"Значимые различия (ANOVA): {', '.join(sig_anova)}")
-        
-        # Сильные корреляции
-        strong_corrs = []
-        for corr in test_results.get("top_correlations", []):
-            if abs(corr["corr"]) > 0.7:
-                strong_corrs.append(f"{corr['col1']}-{corr['col2']} (r={corr['corr']})")
-        
-        if strong_corrs:
-            summary_parts.append(f"Сильные корреляции: {', '.join(strong_corrs)}")
-        
-        return "\n".join(summary_parts)
+        normal = []
+        not_normal = []
+        for col, r in test_results.get("normality_tests", {}).items():
+            if "interpretation" in r:
+                (normal if r["interpretation"]=="normal" else not_normal).append(col)
+
+        if normal:
+            summary.append(f"Нормальное распределение: {', '.join(normal)}")
+        if not_normal:
+            summary.append(f"Ненормальное распределение: {', '.join(not_normal)}")
+
+        sig_t = [
+            f"{t['combination']} (p={t['p_value']})"
+            for t in test_results.get("t_tests", [])
+            if t.get("p_value", 1) < 0.05
+        ]
+        if sig_t:
+            summary.append(f"Значимые различия (t-test): {', '.join(sig_t)}")
+
+        sig_a = [
+            f"{t['combination']} (p={t['p_value']})"
+            for t in test_results.get("anova_tests", [])
+            if t.get("p_value", 1) < 0.05
+        ]
+        if sig_a:
+            summary.append(f"Значимые различия (ANOVA): {', '.join(sig_a)}")
+
+        strong_corr = [
+            f"{c['col1']}–{c['col2']} (r={c['corr']})"
+            for c in test_results.get("top_correlations", [])
+            if abs(c["corr"]) > 0.7
+        ]
+        if strong_corr:
+            summary.append(f"Сильные корреляции: {', '.join(strong_corr)}")
+
+        return "\n".join(summary)
 
     def run(self, ctx: dict) -> dict:
         dataset_path = ctx["files"]["dataset"]
-        
-        # Безопасное чтение данных
+
         if dataset_path.endswith(".csv"):
             df = pd.read_csv(dataset_path)
         else:
             df = pd.read_excel(dataset_path)
-        
-        # Запуск всех статистических тестов
+
         test_results = self.run_all_statistical_tests(df)
-        
-        # Генерация текстового отчета
-        statistical_summary = self.generate_statistical_summary(test_results)
-        
-        # Сохранение в контекст
+        summary = self.generate_statistical_summary(test_results)
+
         ctx.setdefault("metrics", {})
         ctx["metrics"]["statistical_tests"] = test_results
+
         ctx.setdefault("insights", [])
-        ctx["insights"].append(statistical_summary)
-        ctx["brief"] = "Comprehensive statistical analysis completed with multiple tests"
-        
+        ctx["insights"].append(summary)
+
+        ctx["brief"] = "Statistical analysis completed"
+
         self.save_context(ctx)
         return ctx
