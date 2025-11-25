@@ -30,15 +30,17 @@ ARTIFACTS_DIR.mkdir(exist_ok=True, parents=True)
 # --- Agents ---
 from agents.describe import DescribeAgent
 from agents.stat import StatAgent
+from agents.viz import VizAgent
 from agents.combo import ComboAgent
 
 AGENTS = {
     "describe": DescribeAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
     "stat": StatAgent(),
+    "viz": VizAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
     "combo": ComboAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
 }
 
-PIPELINE_ORDER = ["quality", "describe", "stat", "combo"]
+PIPELINE_ORDER = ["describe", "stat", "viz", "combo"]
 
 # --- helpers ---
 def ctx_path_for(task_id: str) -> Path:

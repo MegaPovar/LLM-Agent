@@ -1,0 +1,14 @@
+{
+  "task_id": "3a03c8eb-dc51-4001-9f45-b5caa42e55be",
+  "prompt": "какие машини лучше продавались в зависмости от года пролади",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/3a03c8eb-dc51-4001-9f45-b5caa42e55be/20251125_123404_BMW%20sales%20data%20%282010-2024%29%20%281%29.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/3a03c8eb-dc51-4001-9f45-b5caa42e55be",
+    "artifacts": []
+  },
+  "meta": {},
+  "metrics": {},
+  "findings": {},
+  "insights": [],
+  "progress": []
+}
