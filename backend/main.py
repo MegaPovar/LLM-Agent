@@ -31,10 +31,8 @@ ARTIFACTS_DIR.mkdir(exist_ok=True, parents=True)
 from agents.describe import DescribeAgent
 from agents.stat import StatAgent
 from agents.combo import ComboAgent
-from agents.quality import QualityAgent
 
 AGENTS = {
-    "quality": QualityAgent(),
     "describe": DescribeAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
     "stat": StatAgent(),
     "combo": ComboAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
