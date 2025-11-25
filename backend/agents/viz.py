@@ -1,262 +1,360 @@
-# import pandas as pd
-# import numpy as np
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-# from typing import List, Optional
-# import warnings
-# warnings.filterwarnings('ignore')
+import json
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
 
-# class GraphicalAnalyzer:
-#     def __init__(self, df: pd.DataFrame):
-#         """
-#         Инициализация анализатора с DataFrame
-        
-#         Parameters:
-#         df (pd.DataFrame): DataFrame для анализа
-#         """
-#         self.df = df
-#         self.set_style()
-    
-#     def set_style(self):
-#         """Установка стиля графиков"""
-#         plt.style.use('seaborn-v0_8')
-#         sns.set_palette("husl")
-#         plt.rcParams['figure.figsize'] = (12, 8)
-    
-#     def plot_correlation_heatmap(self, columns: Optional[List[str]] = None, 
-#                                annot: bool = True, cmap: str = 'coolwarm'):
-#         """
-#         Построение тепловой карты корреляции
-        
-#         Parameters:
-#         columns (List[str]): Список столбцов для анализа (по умолчанию все числовые)
-#         annot (bool): Показывать значения корреляции на графике
-#         cmap (str): Цветовая карта
-#         """
-#         numeric_columns = self.df.select_dtypes(include=[np.number]).columns
-        
-#         if columns:
-#             valid_columns = [col for col in columns if col in numeric_columns]
-#             if not valid_columns:
-#                 print("Нет подходящих числовых столбцов для анализа")
-#                 return
-#             data_for_corr = self.df[valid_columns]
-#         else:
-#             data_for_corr = self.df[numeric_columns]
-        
-#         if len(data_for_corr.columns) < 2:
-#             print("Недостаточно числовых столбцов для построения корреляции")
-#             return
-        
-#         correlation_matrix = data_for_corr.corr()
-        
-#         fig, ax = plt.subplots(figsize=(12, 10))
-        
-#         sns.heatmap(correlation_matrix, 
-#                    annot=annot, 
-#                    cmap=cmap, 
-#                    center=0,
-#                    square=True,
-#                    linewidths=0.5,
-#                    cbar_kws={"shrink": 0.8},
-#                    ax=ax)
-        
-#         plt.title('Матрица корреляции', fontsize=16, pad=20)
-#         plt.tight_layout()
-#         plt.show()
-        
-#         return correlation_matrix
-
-#     def plot_categorical_distribution(self, categorical_columns: Optional[List[str]] = None, 
-#                                     max_categories: int = 15, top_n: Optional[int] = None):
-#         """
-#         Построение столбчатых диаграмм для категориальных переменных
-        
-#         Parameters:
-#         categorical_columns (List[str]): Список категориальных столбцов
-#         max_categories (int): Максимальное количество категорий для отображения
-#         top_n (int): Показать только top_n самых частых категорий
-#         """
-#         if categorical_columns is None:
-#             categorical_columns = self.df.select_dtypes(include=['object', 'category']).columns.tolist()
-        
-#         if not categorical_columns:
-#             print("В данных нет категориальных столбцов")
-#             return
-        
-#         n_cols = min(3, len(categorical_columns))
-#         n_rows = (len(categorical_columns) + n_cols - 1) // n_cols
-        
-#         fig, axes = plt.subplots(n_rows, n_cols, figsize=(18, 5 * n_rows))
-#         if n_rows == 1 and n_cols == 1:
-#             axes = np.array([axes])
-#         axes = axes.flatten()
-        
-#         for i, column in enumerate(categorical_columns):
-#             if i >= len(axes):
-#                 break
-                
-#             ax = axes[i]
-#             value_counts = self.df[column].value_counts()
-            
-#             if top_n:
-#                 value_counts = value_counts.head(top_n)
-#             elif len(value_counts) > max_categories:
-#                 value_counts = value_counts.head(max_categories)
-            
-#             if len(value_counts) == 0:
-#                 ax.text(0.5, 0.5, 'Нет данных', ha='center', va='center', transform=ax.transAxes)
-#                 ax.set_title(f'{column}\n(нет данных)')
-#                 continue
-            
-#             bars = ax.bar(range(len(value_counts)), value_counts.values, color=sns
-
-# color_palette("husl", len(value_counts)))
-#             ax.set_title(f'Распределение: {column}', fontsize=14, pad=10)
-#             ax.set_xlabel(column)
-#             ax.set_ylabel('Количество')
-            
-#             ax.set_xticks(range(len(value_counts)))
-#             ax.set_xticklabels(value_counts.index, rotation=45, ha='right')
-            
-#             for j, bar in enumerate(bars):
-#                 height = bar.get_height()
-#                 ax.text(bar.get_x() + bar.get_width()/2., height,
-#                        f'{height}',
-#                        ha='center', va='bottom', fontsize=10)
-        
-#         for j in range(i + 1, len(axes)):
-#             axes[j].set_visible(False)
-        
-#         plt.tight_layout()
-#         plt.show()
-
-#     def plot_pairplot(self, columns: Optional[List[str]] = None, hue: Optional[str] = None):
-#         """
-#         Построение pairplot для визуализации взаимосвязей
-        
-#         Parameters:
-#         columns (List[str]): Список столбцов для анализа
-#         hue (str): Столбец для группировки по цвету
-#         """
-#         numeric_columns = self.df.select_dtypes(include=[np.number]).columns
-        
-#         if columns:
-#             valid_columns = [col for col in columns if col in self.df.columns]
-#             if not valid_columns:
-#                 print("Указанные столбцы не найдены")
-#                 return
-#             plot_data = self.df[valid_columns]
-#         else:
-#             plot_data = self.df[numeric_columns]
-        
-#         if len(plot_data.columns) < 2:
-#             print("Недостаточно столбцов для построения pairplot")
-#             return
-        
-#         if hue and hue not in plot_data.columns:
-#             plot_data[hue] = self.df[hue]
-        
-#         sns.pairplot(plot_data, hue=hue, diag_kind='hist', corner=False)
-#         plt.suptitle('Pairplot: взаимосвязи между переменными', y=1.02)
-#         plt.show()
-
-#     def plot_distribution_comparison(self, numerical_column: str, categorical_column: str):
-#         """
-#         Сравнение распределений числовой переменной по категориям
-        
-#         Parameters:
-#         numerical_column (str): Числовой столбец
-#         categorical_column (str): Категориальный столбец
-#         """
-#         if numerical_column not in self.df.columns or categorical_column not in self.df.columns:
-#             print("Указанные столбцы не найдены в данных")
-#             return
-        
-#         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-        
-#         sns.boxplot(data=self.df, x=categorical_column, y=numerical_column, ax=ax1)
-#         ax1.set_title(f'Boxplot: {numerical_column} по {categorical_column}')
-#         ax1.tick_params(axis='x', rotation=45)
-        
-#         sns.violinplot(data=self.df, x=categorical_column, y=numerical_column, ax=ax2)
-#         ax2.set_title(f'Violin plot: {numerical_column} по {categorical_column}')
-#         ax2.tick_params(axis='x', rotation=45)
-        
-#         plt.tight_layout()
-#         plt.show()
-
-# def analyze_dataset(df, categorical_cols=None, numerical_cols=None):
-#     """
-#     Функция для комплексного анализа датасета
-    
-#     Parameters:
-#     df (pd.DataFrame): Датасет для анализа
-#     categorical_cols (List[str]): Список категориальных столбцов
-#     numerical_cols (List[str]): Список числовых столбцов
-#     """
-#     analyzer = GraphicalAnalyzer(df)
-    
-#     print("=" * 50)
-#     print("АНАЛИЗ ДАТАСЕТА")
-#     print("=" * 50)
-#     print(f"Размер данных: {df.shape}")
-#     print(f"Количество строк: {df.shape[0]}")
-#     print(f"Количество столбцов: {df.shape[1]}")
-#     print("\nТипы данных:")
-#     print(df.dtypes.value_counts())
-    
-#     if categorical_cols is None:
-#         categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
-    
-#     if numerical_cols is None:
-#         numerical_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-    
-#     if categorical_cols:
-#         print(f"\nКатегориальные столбцы ({len(categorical_cols)}): {categorical_cols}")
-#         analyzer.plot_categorical_distribution(categorical_cols)
-    
-#     if numerical_cols:
-#         print(f"\nЧисловые столбцы ({len(numerical_cols)}): {numerical_cols}")
-
-
-
-# if len(numerical_cols) >= 2:
-#             print("\nМатрица корреляции:")
-#             analyzer.plot_correlation_heatmap(numerical_cols)
-            
-#             if len(numerical_cols) <= 8:
-#                 print("\nPairplot числовых переменных:")
-#                 analyzer.plot_pairplot(numerical_cols)
-        
-#         if categorical_cols and numerical_cols:
-#             print("\nСравнение распределений:")
-#             for num_col in numerical_cols[:2]:
-#                 for cat_col in categorical_cols[:2]:
-#                     if len(df[cat_col].unique()) <= 10:
-#                         analyzer.plot_distribution_comparison(num_col, cat_col)
-#                         break
-
-# if name == "__main__":
-#     np.random.seed(42)
-    
-#     sample_data = pd.DataFrame({
-#         'age': np.random.randint(18, 65, 100),
-#         'salary': np.random.normal(50000, 15000, 100),
-#         'department': np.random.choice(['IT', 'HR', 'Finance', 'Marketing'], 100),
-#         'experience': np.random.randint(0, 20, 100),
-#         'city': np.random.choice(['Moscow', 'SPb', 'Kazan', 'Novosibirsk'], 100),
-#         'satisfaction': np.random.randint(1, 6, 100)
-#     })
-    
-#     analyze_dataset(sample_data)
-
+import pandas as pd
+import requests
+import matplotlib
+matplotlib.use("Agg")  # без GUI
+import matplotlib.pyplot as plt
 
 from . import AgentBase
 
-class EvalAgent(AgentBase):
-    name = "eval"
-    def run(self, ctx):
-        ctx["brief"] = "Evaluation complete."
+
+class VizAgent(AgentBase):
+    """
+    Агент визуализации.
+
+    Логика:
+    - даём LLM описание датасета + список доступных функций-рисовалок;
+    - LLM через function calling выбирает, какие графики построить и с какими аргументами;
+    - Python реально строит эти графики и сохраняет в artifacts;
+    - в ctx добавляем пути к файлам и краткий текст про то, что построили.
+    """
+    name = "viz"
+
+    def __init__(self, api_key: str, base_url: str = "https://api.deepseek.com/chat/completions"):
+        self.api_key = api_key
+        self.base_url = base_url
+
+    # ---------- служебное описание датасета ----------
+
+    def _describe_df(self, df: pd.DataFrame) -> Dict[str, Any]:
+        numeric = df.select_dtypes(include="number").columns.tolist()
+        categorical = df.select_dtypes(exclude="number").columns.tolist()
+        return {
+            "shape": list(map(int, df.shape)),
+            "columns": list(df.columns),
+            "numeric_columns": numeric,
+            "categorical_columns": categorical,
+            "head": df.head(5).to_dict("records"),
+        }
+
+    # ---------- функции-рисовалки (будут дергаться через tool calls) ----------
+
+    def _plot_histogram(self, df: pd.DataFrame, column: str, out_dir: Path,
+                        bins: int | None = None) -> Tuple[str, str]:
+        if column not in df.columns:
+            raise ValueError(f"Column '{column}' not in dataframe")
+
+        series = pd.to_numeric(df[column], errors="coerce").dropna()
+        if series.empty:
+            raise ValueError(f"Column '{column}' has no numeric data")
+
+        bins = bins or 20
+        fig, ax = plt.subplots()
+        ax.hist(series, bins=bins)
+        ax.set_title(f"Histogram of {column}")
+        ax.set_xlabel(column)
+        ax.set_ylabel("Count")
+        fig.tight_layout()
+
+        filename = f"hist_{column}.png"
+        path = out_dir / filename
+        fig.savefig(path)
+        plt.close(fig)
+
+        desc = f"Гистограмма числового признака '{column}' (bins={bins})."
+        return str(path), desc
+
+    def _plot_scatter(self, df: pd.DataFrame, x: str, y: str, out_dir: Path) -> Tuple[str, str]:
+        if x not in df.columns or y not in df.columns:
+            raise ValueError(f"Columns '{x}' or '{y}' not in dataframe")
+
+        x_ser = pd.to_numeric(df[x], errors="coerce").dropna()
+        y_ser = pd.to_numeric(df[y], errors="coerce").dropna()
+
+        # Выравниваем по общим индексам
+        common_idx = x_ser.index.intersection(y_ser.index)
+        x_ser = x_ser.loc[common_idx]
+        y_ser = y_ser.loc[common_idx]
+
+        if len(x_ser) < 3:
+            raise ValueError("Not enough numeric data for scatter plot")
+
+        fig, ax = plt.subplots()
+        ax.scatter(x_ser, y_ser, s=10)
+        ax.set_title(f"Scatter: {x} vs {y}")
+        ax.set_xlabel(x)
+        ax.set_ylabel(y)
+        fig.tight_layout()
+
+        filename = f"scatter_{x}_vs_{y}.png"
+        path = out_dir / filename
+        fig.savefig(path)
+        plt.close(fig)
+
+        desc = f"Точечная диаграмма '{x}' vs '{y}'."
+        return str(path), desc
+
+    def _plot_boxplot(self, df: pd.DataFrame, column: str, by: str | None, out_dir: Path) -> Tuple[str, str]:
+        if column not in df.columns:
+            raise ValueError(f"Column '{column}' not in dataframe")
+
+        series = pd.to_numeric(df[column], errors="coerce")
+        if by is not None:
+            if by not in df.columns:
+                raise ValueError(f"Group column '{by}' not in dataframe")
+            groups = df[by].astype(str)
+            fig, ax = plt.subplots()
+            data = [series[groups == g].dropna() for g in groups.unique()]
+            ax.boxplot(data, labels=list(groups.unique()))
+            ax.set_title(f"Boxplot of {column} by {by}")
+            ax.set_xlabel(by)
+            ax.set_ylabel(column)
+            filename = f"box_{column}_by_{by}.png"
+            desc = f"Boxplot '{column}' по группам '{by}'."
+        else:
+            ser_clean = series.dropna()
+            if ser_clean.empty:
+                raise ValueError(f"Column '{column}' has no numeric data")
+            fig, ax = plt.subplots()
+            ax.boxplot(ser_clean)
+            ax.set_title(f"Boxplot of {column}")
+            ax.set_ylabel(column)
+            filename = f"box_{column}.png"
+            desc = f"Boxplot числового признака '{column}'."
+
+        fig.tight_layout()
+        path = out_dir / filename
+        fig.savefig(path)
+        plt.close(fig)
+        return str(path), desc
+
+    # ---------- описание tools для function calling ----------
+
+    def _tools_schema(self) -> List[Dict[str, Any]]:
+        """Схема функций для DeepSeek tools."""
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": "plot_histogram",
+                    "description": "Построить гистограмму числовой колонки.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "column": {
+                                "type": "string",
+                                "description": "Название числовой колонки для гистограммы."
+                            },
+                            "bins": {
+                                "type": "integer",
+                                "description": "Количество корзин (bins), по умолчанию 20.",
+                                "minimum": 5,
+                                "maximum": 100
+                            }
+                        },
+                        "required": ["column"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "plot_scatter",
+                    "description": "Построить scatter plot между двумя числовыми колонками.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "type": "string",
+                                "description": "Название числовой колонки по оси X."
+                            },
+                            "y": {
+                                "type": "string",
+                                "description": "Название числовой колонки по оси Y."
+                            }
+                        },
+                        "required": ["x", "y"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "plot_boxplot",
+                    "description": "Построить boxplot для числовой колонки, опционально по группам.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "column": {
+                                "type": "string",
+                                "description": "Название числовой колонки."
+                            },
+                            "by": {
+                                "type": ["string", "null"],
+                                "description": "Категориальная колонка для группировки (или null)."
+                            }
+                        },
+                        "required": ["column"]
+                    }
+                }
+            },
+        ]
+
+    # ---------- вызов DeepSeek с tools и исполнение tool_calls ----------
+
+    def _ask_llm_for_plots(
+        self,
+        df_info: Dict[str, Any],
+        numeric_cols: List[str],
+        cat_cols: List[str],
+    ) -> Dict[str, Any]:
+        """
+        Делает запрос к DeepSeek с tools, чтобы получить tool_calls.
+        """
+        system_prompt = (
+            "Ты — помощник по визуализации данных. "
+            "Тебе дано описание датасета и список доступных функций визуализации. "
+            "Твоя задача — выбрать до 3 осмысленных графиков и вызвать соответствующие функции. "
+            "Не пиши обычный текст-ответ, используй только tool calls."
+        )
+
+        user_prompt = f"""
+ДАННЫЕ О ДАТАСЕТЕ:
+{json.dumps(df_info, ensure_ascii=False, indent=2)}
+
+ДОСТУПНЫЕ ЧИСЛОВЫЕ КОЛОНКИ:
+{numeric_cols}
+
+ДОСТУПНЫЕ КАТЕГОРИАЛЬНЫЕ КОЛОНКИ:
+{cat_cols}
+
+СДЕЛАЙ:
+- Выбери не более 3 визуализаций.
+- Используй функции plot_histogram / plot_scatter / plot_boxplot.
+- Для plot_scatter выбирай только числовые колонки.
+- Для plot_boxplot можешь использовать группировку по одной категориальной колонке (или без grouping).
+- Не добавляй обычный текст — только tool calls.
+""".strip()
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}",
+        }
+        payload: Dict[str, Any] = {
+            "model": "deepseek-chat",
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            "tools": self._tools_schema(),
+            "tool_choice": "auto",
+            "temperature": 0.1,
+            "max_tokens": 512,
+        }
+
+        resp = requests.post(self.base_url, headers=headers, json=payload, timeout=60)
+        resp.raise_for_status()
+        return resp.json()
+
+    # ---------- основной метод агента ----------
+
+    def run(self, ctx: Dict[str, Any]) -> Dict[str, Any]:
+        dataset_path = ctx["files"]["dataset"]
+        df = pd.read_csv(dataset_path) if dataset_path.endswith(".csv") else pd.read_excel(dataset_path)
+
+        out_dir = Path(ctx["files"]["out_dir"])
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        df_info = self._describe_df(df)
+        numeric_cols = df_info["numeric_columns"]
+        cat_cols = df_info["categorical_columns"]
+
+        # гарантируем ключи
+        ctx.setdefault("files", {})
+        ctx["files"].setdefault("artifacts", [])
+        ctx.setdefault("insights", [])
+        ctx.setdefault("metrics", {})
+        ctx.setdefault("findings", {})
+
+        generated: List[str] = []
+        descriptions: List[str] = []
+
+        try:
+            llm_response = self._ask_llm_for_plots(df_info, numeric_cols, cat_cols)
+            message = llm_response["choices"][0]["message"]
+            tool_calls = message.get("tool_calls") or []
+
+            for call in tool_calls:
+                fn_name = call["function"]["name"]
+                raw_args = call["function"].get("arguments") or "{}"
+                try:
+                    args = json.loads(raw_args)
+                except Exception:
+                    args = {}
+
+                try:
+                    if fn_name == "plot_histogram":
+                        path, desc = self._plot_histogram(
+                            df,
+                            column=args.get("column"),
+                            out_dir=out_dir,
+                            bins=args.get("bins"),
+                        )
+                    elif fn_name == "plot_scatter":
+                        path, desc = self._plot_scatter(
+                            df,
+                            x=args.get("x"),
+                            y=args.get("y"),
+                            out_dir=out_dir,
+                        )
+                    elif fn_name == "plot_boxplot":
+                        path, desc = self._plot_boxplot(
+                            df,
+                            column=args.get("column"),
+                            by=args.get("by"),
+                            out_dir=out_dir,
+                        )
+                    else:
+                        continue
+
+                    if path not in ctx["files"]["artifacts"]:
+                        ctx["files"]["artifacts"].append(path)
+                    generated.append(path)
+                    descriptions.append(desc)
+                except Exception as e:
+                    # не валим пайплайн из-за одной неудачной картинки
+                    descriptions.append(f"Ошибка при построении {fn_name}: {e}")
+
+        except Exception as e:
+            # fallback: если что-то с LLM/tool calling, делаем простые гистограммы
+            if numeric_cols:
+                col = numeric_cols[0]
+                try:
+                    path, desc = self._plot_histogram(df, column=col, out_dir=out_dir)
+                    if path not in ctx["files"]["artifacts"]:
+                        ctx["files"]["artifacts"].append(path)
+                    generated.append(path)
+                    descriptions.append(
+                        f"LLM не сработал, но построена базовая гистограмма по '{col}'. Ошибка: {e}"
+                    )
+                except Exception as ee:
+                    descriptions.append(f"Не удалось построить даже базовую гистограмму: {ee}")
+            else:
+                descriptions.append(f"LLM/tool calling дал ошибку, и нет числовых колонок для fallback: {e}")
+
+        if generated:
+            ctx["insights"].append(
+                "Сгенерированы визуализации:\n" + "\n".join(f"- {d}" for d in descriptions)
+            )
+            ctx["brief"] = "Визуализация датасета выполнена."
+        else:
+            ctx["insights"].append(
+                "Агент визуализации не смог построить ни одного графика (нет подходящих данных или все вызовы упали)."
+            )
+            ctx["brief"] = "Визуализация не выполнена."
+
         self.save_context(ctx)
         return ctx
