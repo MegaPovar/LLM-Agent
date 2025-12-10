@@ -1,0 +1,150 @@
+{
+  "task_id": "7bb55ab5-c0f1-4b7d-a37f-128b6ad4837b",
+  "prompt": "какие машини лучше продавались в зависмости от года пролади",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/7bb55ab5-c0f1-4b7d-a37f-128b6ad4837b/20251203_101332_BMW%20sales%20data%20%282010-2024%29%20%281%29.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/7bb55ab5-c0f1-4b7d-a37f-128b6ad4837b",
+    "artifacts": []
+  },
+  "meta": {},
+  "metrics": {},
+  "findings": {
+    "describe": {
+      "shape": [
+        50000,
+        11
+      ],
+      "columns": [
+        "Model",
+        "Year",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume",
+        "Sales_Classification"
+      ],
+      "data_types": {
+        "Model": "object",
+        "Year": "int64",
+        "Region": "object",
+        "Color": "object",
+        "Fuel_Type": "object",
+        "Transmission": "object",
+        "Engine_Size_L": "float64",
+        "Mileage_KM": "int64",
+        "Price_USD": "int64",
+        "Sales_Volume": "int64",
+        "Sales_Classification": "object"
+      },
+      "missing_values": {
+        "Model": 0,
+        "Year": 0,
+        "Region": 0,
+        "Color": 0,
+        "Fuel_Type": 0,
+        "Transmission": 0,
+        "Engine_Size_L": 0,
+        "Mileage_KM": 0,
+        "Price_USD": 0,
+        "Sales_Volume": 0,
+        "Sales_Classification": 0
+      },
+      "numeric_columns": [
+        "Year",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume"
+      ],
+      "categorical_columns": [
+        "Model",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Sales_Classification"
+      ],
+      "sample_data": [
+        {
+          "Model": "5 Series",
+          "Year": 2016,
+          "Region": "Asia",
+          "Color": "Red",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Manual",
+          "Engine_Size_L": 3.5,
+          "Mileage_KM": 151748,
+          "Price_USD": 98740,
+          "Sales_Volume": 8300,
+          "Sales_Classification": "High"
+        },
+        {
+          "Model": "i8",
+          "Year": 2013,
+          "Region": "North America",
+          "Color": "Red",
+          "Fuel_Type": "Hybrid",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.6,
+          "Mileage_KM": 121671,
+          "Price_USD": 79219,
+          "Sales_Volume": 3428,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "5 Series",
+          "Year": 2022,
+          "Region": "North America",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 4.5,
+          "Mileage_KM": 10991,
+          "Price_USD": 113265,
+          "Sales_Volume": 6994,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "X3",
+          "Year": 2024,
+          "Region": "Middle East",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.7,
+          "Mileage_KM": 27255,
+          "Price_USD": 60971,
+          "Sales_Volume": 4047,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "7 Series",
+          "Year": 2020,
+          "Region": "South America",
+          "Color": "Black",
+          "Fuel_Type": "Diesel",
+          "Transmission": "Manual",
+          "Engine_Size_L": 2.1,
+          "Mileage_KM": 122131,
+          "Price_USD": 49898,
+          "Sales_Volume": 3080,
+          "Sales_Classification": "Low"
+        }
+      ]
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию о продажах автомобилей, включая их модель, год выпуска, регион продажи, технические характеристики, пробег, цену и объем продаж.\n- Каждой записи присвоена классификация уровня продаж (Sales_Classification).\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- Датсет содержит 50000 строк (записей) и 11 столбцов (признаков).\n- 5 признаков являются числовыми: Year, Engine_Size_L, Mileage_KM, Price_USD, Sales_Volume.\n- 6 признаков являются категориальными: Model, Region, Color, Fuel_Type, Transmission, Sales_Classification.\n- В данных отсутствуют пропущенные значения во всех столбцах.\n- На примере выборки: год выпуска автомобилей варьируется от 2013 до 2024, пробег - от 10991 до 151748 км, цена - от 49898 до 113265 USD.\n- На примере выборки: представлены такие категории, как типы топлива Petrol, Hybrid, Diesel; регионы Asia, North America, Middle East, South America; классификации продаж High и Low.\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Пропущенные значения отсутствуют, что снижает риски.\n- На основе предоставленных фактов невозможно выявить выбросы, дубликаты или несоответствия, так как статистика не рассчитана.\n- В предоставленной выборке для модели \"5 Series\" указана классификация продаж и \"High\", и \"Low\", что требует проверки на согласованность категорий во всем датасете.\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние технических характеристик (год выпуска, объем двигателя, пробег, тип топлива) на цену автомобиля.\n- Распределение объемов продаж по регионам, моделям или классификациям.\n- Зависимость между ценой (Price_USD) и объемом продаж (Sales_Volume).\n- Анализ средних цен и пробега по разным типам топлива или коробкам передач.\n- Проверка и анализ причин присвоения классификации продаж (High/Low) на основе других параметров.\n- Сезонность или тренды продаж в зависимости от года выпуска автомобилей.",
+    "Ошибка при обращении к DeepSeek API в EvalAgent: HTTPSConnectionPool(host='api.deepseek.com', port=443): Read timed out. (read timeout=60)"
+  ],
+  "progress": [
+    "describe",
+    "eval"
+  ],
+  "errors": [],
+  "brief": "Оценка уместности статистических тестов и значимости результатов выполнена."
+}

@@ -1,0 +1,348 @@
+{
+  "task_id": "ceb45762-9421-435e-a9ea-8757986a8b38",
+  "prompt": "какие машини лучше продавались в зависмости от года пролади",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/ceb45762-9421-435e-a9ea-8757986a8b38/20251203_101008_BMW%20sales%20data%20%282010-2024%29%20%281%29.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/ceb45762-9421-435e-a9ea-8757986a8b38",
+    "artifacts": [
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/ceb45762-9421-435e-a9ea-8757986a8b38/combo_report.txt"
+    ]
+  },
+  "meta": {},
+  "metrics": {},
+  "findings": {
+    "describe": {
+      "shape": [
+        50000,
+        11
+      ],
+      "columns": [
+        "Model",
+        "Year",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume",
+        "Sales_Classification"
+      ],
+      "data_types": {
+        "Model": "object",
+        "Year": "int64",
+        "Region": "object",
+        "Color": "object",
+        "Fuel_Type": "object",
+        "Transmission": "object",
+        "Engine_Size_L": "float64",
+        "Mileage_KM": "int64",
+        "Price_USD": "int64",
+        "Sales_Volume": "int64",
+        "Sales_Classification": "object"
+      },
+      "missing_values": {
+        "Model": 0,
+        "Year": 0,
+        "Region": 0,
+        "Color": 0,
+        "Fuel_Type": 0,
+        "Transmission": 0,
+        "Engine_Size_L": 0,
+        "Mileage_KM": 0,
+        "Price_USD": 0,
+        "Sales_Volume": 0,
+        "Sales_Classification": 0
+      },
+      "numeric_columns": [
+        "Year",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume"
+      ],
+      "categorical_columns": [
+        "Model",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Sales_Classification"
+      ],
+      "sample_data": [
+        {
+          "Model": "5 Series",
+          "Year": 2016,
+          "Region": "Asia",
+          "Color": "Red",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Manual",
+          "Engine_Size_L": 3.5,
+          "Mileage_KM": 151748,
+          "Price_USD": 98740,
+          "Sales_Volume": 8300,
+          "Sales_Classification": "High"
+        },
+        {
+          "Model": "i8",
+          "Year": 2013,
+          "Region": "North America",
+          "Color": "Red",
+          "Fuel_Type": "Hybrid",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.6,
+          "Mileage_KM": 121671,
+          "Price_USD": 79219,
+          "Sales_Volume": 3428,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "5 Series",
+          "Year": 2022,
+          "Region": "North America",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 4.5,
+          "Mileage_KM": 10991,
+          "Price_USD": 113265,
+          "Sales_Volume": 6994,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "X3",
+          "Year": 2024,
+          "Region": "Middle East",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.7,
+          "Mileage_KM": 27255,
+          "Price_USD": 60971,
+          "Sales_Volume": 4047,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "7 Series",
+          "Year": 2020,
+          "Region": "South America",
+          "Color": "Black",
+          "Fuel_Type": "Diesel",
+          "Transmission": "Manual",
+          "Engine_Size_L": 2.1,
+          "Mileage_KM": 122131,
+          "Price_USD": 49898,
+          "Sales_Volume": 3080,
+          "Sales_Classification": "Low"
+        }
+      ]
+    },
+    "combo_info": {
+      "basic_info": {
+        "shape": [
+          50000,
+          11
+        ],
+        "columns": [
+          "Model",
+          "Year",
+          "Region",
+          "Color",
+          "Fuel_Type",
+          "Transmission",
+          "Engine_Size_L",
+          "Mileage_KM",
+          "Price_USD",
+          "Sales_Volume",
+          "Sales_Classification"
+        ],
+        "types": {
+          "Model": "object",
+          "Year": "int64",
+          "Region": "object",
+          "Color": "object",
+          "Fuel_Type": "object",
+          "Transmission": "object",
+          "Engine_Size_L": "float64",
+          "Mileage_KM": "int64",
+          "Price_USD": "int64",
+          "Sales_Volume": "int64",
+          "Sales_Classification": "object"
+        },
+        "numeric_columns": [
+          "Year",
+          "Engine_Size_L",
+          "Mileage_KM",
+          "Price_USD",
+          "Sales_Volume"
+        ],
+        "categorical_columns": [
+          "Model",
+          "Region",
+          "Color",
+          "Fuel_Type",
+          "Transmission",
+          "Sales_Classification"
+        ]
+      },
+      "sample_statistics": {
+        "Model": {
+          "count": 50000,
+          "unique": 11,
+          "top": "7 Series",
+          "freq": 4666,
+          "mean": NaN,
+          "std": NaN,
+          "min": NaN,
+          "25%": NaN,
+          "50%": NaN,
+          "75%": NaN,
+          "max": NaN
+        },
+        "Year": {
+          "count": 50000.0,
+          "unique": NaN,
+          "top": NaN,
+          "freq": NaN,
+          "mean": 2017.0157,
+          "std": 4.324459218093122,
+          "min": 2010.0,
+          "25%": 2013.0,
+          "50%": 2017.0,
+          "75%": 2021.0,
+          "max": 2024.0
+        },
+        "Region": {
+          "count": 50000,
+          "unique": 6,
+          "top": "Asia",
+          "freq": 8454,
+          "mean": NaN,
+          "std": NaN,
+          "min": NaN,
+          "25%": NaN,
+          "50%": NaN,
+          "75%": NaN,
+          "max": NaN
+        },
+        "Color": {
+          "count": 50000,
+          "unique": 6,
+          "top": "Red",
+          "freq": 8463,
+          "mean": NaN,
+          "std": NaN,
+          "min": NaN,
+          "25%": NaN,
+          "50%": NaN,
+          "75%": NaN,
+          "max": NaN
+        },
+        "Fuel_Type": {
+          "count": 50000,
+          "unique": 4,
+          "top": "Hybrid",
+          "freq": 12716,
+          "mean": NaN,
+          "std": NaN,
+          "min": NaN,
+          "25%": NaN,
+          "50%": NaN,
+          "75%": NaN,
+          "max": NaN
+        },
+        "Transmission": {
+          "count": 50000,
+          "unique": 2,
+          "top": "Manual",
+          "freq": 25154,
+          "mean": NaN,
+          "std": NaN,
+          "min": NaN,
+          "25%": NaN,
+          "50%": NaN,
+          "75%": NaN,
+          "max": NaN
+        },
+        "Engine_Size_L": {
+          "count": 50000.0,
+          "unique": NaN,
+          "top": NaN,
+          "freq": NaN,
+          "mean": 3.24718,
+          "std": 1.0090783975411661,
+          "min": 1.5,
+          "25%": 2.4,
+          "50%": 3.2,
+          "75%": 4.1,
+          "max": 5.0
+        },
+        "Mileage_KM": {
+          "count": 50000.0,
+          "unique": NaN,
+          "top": NaN,
+          "freq": NaN,
+          "mean": 100307.20314,
+          "std": 57941.50934352448,
+          "min": 3.0,
+          "25%": 50178.0,
+          "50%": 100388.5,
+          "75%": 150630.25,
+          "max": 199996.0
+        },
+        "Price_USD": {
+          "count": 50000.0,
+          "unique": NaN,
+          "top": NaN,
+          "freq": NaN,
+          "mean": 75034.6009,
+          "std": 25998.248881722735,
+          "min": 30000.0,
+          "25%": 52434.75,
+          "50%": 75011.5,
+          "75%": 97628.25,
+          "max": 119998.0
+        },
+        "Sales_Volume": {
+          "count": 50000.0,
+          "unique": NaN,
+          "top": NaN,
+          "freq": NaN,
+          "mean": 5067.51468,
+          "std": 2856.7671252296104,
+          "min": 100.0,
+          "25%": 2588.0,
+          "50%": 5087.0,
+          "75%": 7537.25,
+          "max": 9999.0
+        },
+        "Sales_Classification": {
+          "count": 50000,
+          "unique": 2,
+          "top": "Low",
+          "freq": 34754,
+          "mean": NaN,
+          "std": NaN,
+          "min": NaN,
+          "25%": NaN,
+          "50%": NaN,
+          "75%": NaN,
+          "max": NaN
+        }
+      }
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию о продажах автомобилей, включая их модель, год выпуска, регион продажи, технические характеристики, пробег, цену и объем продаж.\n- Каждая запись также имеет классификацию уровня продаж (Sales_Classification).\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- Датсет содержит 50000 строк (записей) и 11 столбцов (признаков).\n- 5 признаков являются числовыми: Year, Engine_Size_L, Mileage_KM, Price_USD, Sales_Volume.\n- 6 признаков являются категориальными: Model, Region, Color, Fuel_Type, Transmission, Sales_Classification.\n- Примеры значений: модели автомобилей включают \"5 Series\", \"i8\", \"X3\", \"7 Series\"; регионы — \"Asia\", \"North America\", \"Middle East\", \"South America\"; типы топлива — \"Petrol\", \"Hybrid\", \"Diesel\".\n- На основе примера данных: год выпуска автомобилей варьируется от 2013 до 2024, пробег — от 10991 до 151748 км, цена — от 49898 до 113265 USD.\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Согласно предоставленным фактам, пропущенных значений в данных нет (все поля имеют 0 пропусков).\n- Необходима проверка на наличие выбросов в числовых полях (например, в цене, пробеге, объеме двигателя), так как статистический анализ не предоставлен.\n- Необходима проверка на дубликаты записей и корректность категорий (например, в классификации продаж \"High\" и \"Low\" из примера, но возможны и другие значения).\n- В предоставленном примере для модели \"5 Series\" 2016 года указан объем двигателя 3.5L, а для 2022 года — 4.5L, что требует проверки на согласованность данных по моделям и годам.\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние технических характеристик (объем двигателя, тип топлива, коробка передач) и пробега на цену автомобиля.\n- Распределение продаж по регионам и моделям, а также сегментация по классификации уровня продаж.\n- Зависимость объема продаж (Sales_Volume) от цены, года выпуска или других факторов.\n- Анализ средних цен и пробега по разным типам топлива или регионам.\n- Исследование корреляции между числовыми признаками, такими как год выпуска и пробег, или объем двигателя и цена.\n- Проверка гипотез, например, отличаются ли средние цены между автомобилями с классификацией продаж \"High\" и \"Low\".",
+    "- Результатов статистических тестов нет, поэтому оценить их уместность и значимость невозможно. Это главный пробел.\n\n- Без тестов нельзя определить, какие модели лучше продавались по годам. Нужны как минимум описательные статистики (средние, медианы) и визуализации (линейные графики продаж по годам для топ-моделей).\n\n- Опасность: делать выводы только на основе сырых чисел или примеров из sample_data. Например, в примере для 5 Series разные года, но это лишь 2 точки из 50000. Нужен агрегированный анализ.\n\n- Рекомендации:\n1. Начать с кросс-таблиц (pivot tables) или группировок: средний Sales_Volume по Model и Year.\n2. Для сравнения продаж между группами (например, High vs Low classification) использовать t-тест или U-Манна-Уитни, если распределение ненормальное.\n3. Для анализа влияния нескольких факторов (Year, Region, Fuel_Type) на Sales_Volume применить регрессию (линейную, если объем непрерывный, или Пуассона, если это счетные данные).\n4. Проверить корреляции между числовыми признаками (Price, Year, Mileage) до построения моделей.\n5. Обязательно изучить распределения числовых переменных на нормальность и выбросы перед тестами.",
+    "Тривиальные гипотезы: более новые машины (больший Year) продаются лучше (больший Sales_Volume) и дороже (Price_USD). Автомобили с меньшим пробегом (Mileage_KM) стоят дороже. Это базовые зависимости.\n\nНетривиальные гипотезы: существует оптимальный возраст автомобиля (разница между годом продажи и Year), максимизирующий объем продаж, возможно, не самые новые. Динамика предпочтений по типу топлива (Fuel_Type) или трансмиссии (Transmission) в зависимости от региона (Region) и года. Влияние комбинации факторов (например, Color и Model) на классификацию продаж (Sales_Classification) сверх очевидной связи с ценой.\n\nБизнес-советы: ключевые метрики — Price_USD, Sales_Volume, Sales_Classification. Смотрите на среднюю цену и объем продаж в разрезах Year, Region, Model, Fuel_Type. Сравнивайте сегменты: регионы между собой, модели внутри одного года, \"High\" vs \"Low\" классификации продаж по техническим характеристикам (Engine_Size_L, Transmission). Важные инсайты: выявление регионов с аномально высокой или низкой долей продаж классификации \"High\". Поиск моделей или комбинаций (например, Hybrid в определенном регионе), где цена не падает с пробегом так сильно, как в среднем. Анализ, как распространенность трансмиссии (Manual/Automatic) коррелирует с регионом и влияет на объем продаж."
+  ],
+  "progress": [
+    "describe",
+    "eval",
+    "combo"
+  ],
+  "errors": [],
+  "brief": "Комбо-агент: нетривиальные гипотезы и бизнес-советы по датасету."
+}
