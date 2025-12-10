@@ -11,6 +11,10 @@ import matplotlib.pyplot as plt
 from . import AgentBase
 
 
+# аккуратный базовый стиль
+plt.style.use("seaborn-v0_8")
+
+
 class VizAgent(AgentBase):
     """
     Агент визуализации.
@@ -40,6 +44,18 @@ class VizAgent(AgentBase):
             "head": df.head(5).to_dict("records"),
         }
 
+    # ---------- общий хелпер для красивых графиков ----------
+
+    def _init_figure(self, title: str, x_label: str | None = None, y_label: str | None = None):
+        fig, ax = plt.subplots(figsize=(8, 5), dpi=120)
+        ax.set_title(title, fontsize=14, pad=10)
+        if x_label:
+            ax.set_xlabel(x_label, fontsize=11)
+        if y_label:
+            ax.set_ylabel(y_label, fontsize=11)
+        ax.grid(True, linestyle="--", alpha=0.4)
+        return fig, ax
+
     # ---------- функции-рисовалки (будут дергаться через tool calls) ----------
 
     def _plot_histogram(self, df: pd.DataFrame, column: str, out_dir: Path,
@@ -51,20 +67,42 @@ class VizAgent(AgentBase):
         if series.empty:
             raise ValueError(f"Column '{column}' has no numeric data")
 
-        bins = bins or 20
-        fig, ax = plt.subplots()
-        ax.hist(series, bins=bins)
-        ax.set_title(f"Histogram of {column}")
-        ax.set_xlabel(column)
-        ax.set_ylabel("Count")
+        bins = bins or 30
+
+        fig, ax = self._init_figure(
+            title=f"Histogram of {column}",
+            x_label=column,
+            y_label="Count",
+        )
+
+        ax.hist(
+            series,
+            bins=bins,
+            alpha=0.8,
+            edgecolor="white",
+            linewidth=0.7,
+        )
+
+        # вертикальная линия медианы
+        median = series.median()
+        ax.axvline(median, linestyle="--", linewidth=1.2)
+        ax.text(
+            median,
+            ax.get_ylim()[1] * 0.95,
+            f"median={median:.0f}",
+            ha="right",
+            va="top",
+            fontsize=9,
+        )
+
         fig.tight_layout()
 
         filename = f"hist_{column}.png"
         path = out_dir / filename
-        fig.savefig(path)
+        fig.savefig(path, bbox_inches="tight")
         plt.close(fig)
 
-        desc = f"Гистограмма числового признака '{column}' (bins={bins})."
+        desc = f"Гистограмма числового признака '{column}' (bins={bins}), отмечена медиана."
         return str(path), desc
 
     def _plot_scatter(self, df: pd.DataFrame, x: str, y: str, out_dir: Path) -> Tuple[str, str]:
@@ -82,19 +120,34 @@ class VizAgent(AgentBase):
         if len(x_ser) < 3:
             raise ValueError("Not enough numeric data for scatter plot")
 
-        fig, ax = plt.subplots()
-        ax.scatter(x_ser, y_ser, s=10)
-        ax.set_title(f"Scatter: {x} vs {y}")
-        ax.set_xlabel(x)
-        ax.set_ylabel(y)
+        # если точек очень много — подсэмплируем
+        if len(x_ser) > 5000:
+            sample = x_ser.sample(5000, random_state=42).index
+            x_ser = x_ser.loc[sample]
+            y_ser = y_ser.loc[sample]
+
+        fig, ax = self._init_figure(
+            title=f"Scatter: {x} vs {y}",
+            x_label=x,
+            y_label=y,
+        )
+
+        ax.scatter(
+            x_ser,
+            y_ser,
+            s=12,
+            alpha=0.4,
+            edgecolors="none",
+        )
+
         fig.tight_layout()
 
         filename = f"scatter_{x}_vs_{y}.png"
         path = out_dir / filename
-        fig.savefig(path)
+        fig.savefig(path, bbox_inches="tight")
         plt.close(fig)
 
-        desc = f"Точечная диаграмма '{x}' vs '{y}'."
+        desc = f"Точечная диаграмма '{x}' vs '{y}' (с лёгким семплированием при больших объёмах данных)."
         return str(path), desc
 
     def _plot_boxplot(self, df: pd.DataFrame, column: str, by: str | None, out_dir: Path) -> Tuple[str, str]:
@@ -102,32 +155,63 @@ class VizAgent(AgentBase):
             raise ValueError(f"Column '{column}' not in dataframe")
 
         series = pd.to_numeric(df[column], errors="coerce")
+
         if by is not None:
             if by not in df.columns:
                 raise ValueError(f"Group column '{by}' not in dataframe")
-            groups = df[by].astype(str)
-            fig, ax = plt.subplots()
-            data = [series[groups == g].dropna() for g in groups.unique()]
-            ax.boxplot(data, labels=list(groups.unique()))
-            ax.set_title(f"Boxplot of {column} by {by}")
-            ax.set_xlabel(by)
-            ax.set_ylabel(column)
+
+            groups_series = df[by].astype(str)
+            data = pd.DataFrame({column: series, by: groups_series}).dropna()
+
+            if data.empty:
+                raise ValueError(f"No data for boxplot {column} by {by}")
+
+            # оставляем топ-5 категорий по частоте
+            top_cats = data[by].value_counts().head(5).index.tolist()
+            data = data[data[by].isin(top_cats)]
+
+            if data.empty:
+                raise ValueError(f"No data for top categories in '{by}'")
+
+            fig, ax = self._init_figure(
+                title=f"Boxplot of {column} by {by}",
+                x_label=by,
+                y_label=column,
+            )
+
+            grouped = [data[data[by] == cat][column].values for cat in top_cats]
+            bp = ax.boxplot(
+                grouped,
+                labels=top_cats,
+                patch_artist=True,
+                showfliers=False,
+                medianprops=dict(linewidth=1.5),
+            )
+
+            # аккуратные полупрозрачные коробки
+            for patch in bp["boxes"]:
+                patch.set(alpha=0.6)
+
+            ax.tick_params(axis="x", rotation=15)
             filename = f"box_{column}_by_{by}.png"
-            desc = f"Boxplot '{column}' по группам '{by}'."
+            desc = f"Boxplot '{column}' по категориям '{by}' (топ-5 групп по частоте)."
+
         else:
             ser_clean = series.dropna()
             if ser_clean.empty:
                 raise ValueError(f"Column '{column}' has no numeric data")
-            fig, ax = plt.subplots()
-            ax.boxplot(ser_clean)
-            ax.set_title(f"Boxplot of {column}")
-            ax.set_ylabel(column)
+
+            fig, ax = self._init_figure(
+                title=f"Boxplot of {column}",
+                y_label=column,
+            )
+            ax.boxplot(ser_clean, patch_artist=True, showfliers=False)
             filename = f"box_{column}.png"
             desc = f"Boxplot числового признака '{column}'."
 
         fig.tight_layout()
         path = out_dir / filename
-        fig.savefig(path)
+        fig.savefig(path, bbox_inches="tight")
         plt.close(fig)
         return str(path), desc
 
@@ -150,7 +234,7 @@ class VizAgent(AgentBase):
                             },
                             "bins": {
                                 "type": "integer",
-                                "description": "Количество корзин (bins), по умолчанию 20.",
+                                "description": "Количество корзин (bins), по умолчанию 30.",
                                 "minimum": 5,
                                 "maximum": 100
                             }

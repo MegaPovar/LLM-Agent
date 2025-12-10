@@ -1,0 +1,181 @@
+{
+  "task_id": "90613631-9252-400a-a87d-7e881a79ff2a",
+  "prompt": "какие машини лучше продавались в зависмости от года пролади",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/90613631-9252-400a-a87d-7e881a79ff2a/20251210_121314_BMW%20sales%20data%20%282010-2024%29%20%281%29.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/90613631-9252-400a-a87d-7e881a79ff2a",
+    "artifacts": [
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/90613631-9252-400a-a87d-7e881a79ff2a/hist_Price_USD.png",
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/90613631-9252-400a-a87d-7e881a79ff2a/combo_report.txt"
+    ]
+  },
+  "meta": {},
+  "metrics": {
+    "quality_score": 10
+  },
+  "findings": {
+    "describe": {
+      "shape": [
+        50000,
+        11
+      ],
+      "columns": [
+        "Model",
+        "Year",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume",
+        "Sales_Classification"
+      ],
+      "data_types": {
+        "Model": "object",
+        "Year": "int64",
+        "Region": "object",
+        "Color": "object",
+        "Fuel_Type": "object",
+        "Transmission": "object",
+        "Engine_Size_L": "float64",
+        "Mileage_KM": "int64",
+        "Price_USD": "int64",
+        "Sales_Volume": "int64",
+        "Sales_Classification": "object"
+      },
+      "missing_values": {
+        "Model": 0,
+        "Year": 0,
+        "Region": 0,
+        "Color": 0,
+        "Fuel_Type": 0,
+        "Transmission": 0,
+        "Engine_Size_L": 0,
+        "Mileage_KM": 0,
+        "Price_USD": 0,
+        "Sales_Volume": 0,
+        "Sales_Classification": 0
+      },
+      "numeric_columns": [
+        "Year",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume"
+      ],
+      "categorical_columns": [
+        "Model",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Sales_Classification"
+      ],
+      "sample_data": [
+        {
+          "Model": "5 Series",
+          "Year": 2016,
+          "Region": "Asia",
+          "Color": "Red",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Manual",
+          "Engine_Size_L": 3.5,
+          "Mileage_KM": 151748,
+          "Price_USD": 98740,
+          "Sales_Volume": 8300,
+          "Sales_Classification": "High"
+        },
+        {
+          "Model": "i8",
+          "Year": 2013,
+          "Region": "North America",
+          "Color": "Red",
+          "Fuel_Type": "Hybrid",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.6,
+          "Mileage_KM": 121671,
+          "Price_USD": 79219,
+          "Sales_Volume": 3428,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "5 Series",
+          "Year": 2022,
+          "Region": "North America",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 4.5,
+          "Mileage_KM": 10991,
+          "Price_USD": 113265,
+          "Sales_Volume": 6994,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "X3",
+          "Year": 2024,
+          "Region": "Middle East",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.7,
+          "Mileage_KM": 27255,
+          "Price_USD": 60971,
+          "Sales_Volume": 4047,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "7 Series",
+          "Year": 2020,
+          "Region": "South America",
+          "Color": "Black",
+          "Fuel_Type": "Diesel",
+          "Transmission": "Manual",
+          "Engine_Size_L": 2.1,
+          "Mileage_KM": 122131,
+          "Price_USD": 49898,
+          "Sales_Volume": 3080,
+          "Sales_Classification": "Low"
+        }
+      ]
+    },
+    "combo": {
+      "completeness": 1.0,
+      "quality_score": 10,
+      "potential_issues": [],
+      "duplicate_rows": 0,
+      "data_characteristics": {
+        "num_rows": 50000,
+        "num_columns": 11,
+        "numeric_columns": [
+          "Year",
+          "Engine_Size_L",
+          "Mileage_KM",
+          "Price_USD",
+          "Sales_Volume"
+        ],
+        "categorical_columns": [
+          "Model",
+          "Region",
+          "Color",
+          "Fuel_Type",
+          "Transmission",
+          "Sales_Classification"
+        ]
+      }
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию о продажах автомобилей, включая их характеристики, стоимость, пробег и объёмы продаж.\n- Набор данных состоит из 50000 строк и 11 столбцов.\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- Количество записей: 50000.\n- Количество признаков: 11.\n- Числовые признаки: 5 (Year, Engine_Size_L, Mileage_KM, Price_USD, Sales_Volume).\n- Категориальные признаки: 6 (Model, Region, Color, Fuel_Type, Transmission, Sales_Classification).\n- Пропущенных значений нет ни в одном столбце.\n- Примеры моделей: 5 Series, i8, X3, 7 Series.\n- Примеры регионов: Asia, North America, Middle East, South America.\n- Примеры классификации продаж: High, Low.\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Пропущенных значений в данных не обнаружено.\n- На основе предоставленных фактов невозможно выявить выбросы, дубликаты, странные категории или несоответствия, так как статистика не предоставлена.\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние характеристик автомобиля (год выпуска, объём двигателя, тип топлива, коробка передач) на его цену (Price_USD).\n- Распределение объёмов продаж (Sales_Volume) по регионам (Region) или моделям (Model).\n- Зависимость между пробегом (Mileage_KM) и ценой автомобиля (Price_USD).\n- Анализ того, как факторы (цвет, тип топлива) связаны с классификацией уровня продаж (Sales_Classification).\n- Сравнение средних цен или объёмов продаж между различными категориями (например, тип трансмиссии или топлива).\n- Исследование распределения числовых признаков (год выпуска, объём двигателя) для выявления выбросов или закономерностей.",
+    "Сгенерированы визуализации:\n- Гистограмма числового признака 'Price_USD' (bins=30), отмечена медиана.",
+    "Анализ данных показывает, что в зависимости от года продажи есть как тривиальные, так и неочевидные закономерности.\n\nОценка качества данных: Данные отличные. Полная полнота (1.0), нет дубликатов, типы данных корректны. Можно доверять анализу.\n\nТривиальность гипотез:\n1.  Очевидно, что более новые машины (ближе к 2024 году) будут дороже. Это подтверждается данными: средний год выпуска — 2017, а цена сильно варьируется.\n2.  Очевидна обратная связь: с ростом пробега (Mileage_KM) цена должна падать.\n3.  Неочевидным может быть влияние типа топлива (Hybrid — самый частый) или региона (Asia — лидер по количеству записей) на динамику продаж и цен по годам. Также интересно, как менялась популярность моделей (всего 11 моделей, топ — 7 Series) со временем.\n\nБизнес-советы:\n1.  Не анализируйте просто \"лучше продавались\". Нужно разделить метрики: объем продаж (Sales_Volume) и цену (Price_USD). Авто может продаваться в большом количестве, но с низкой маржой, и наоборот.\n2.  Исследуйте тренды: Постройте динамику средней цены и общего объема продаж по годам. Выявите, растет ли рынок в цене или в количестве.\n3.  Анализируйте когорты: Сравните, как меняется цена одной модели (например, 7 Series) в зависимости от ее года выпуска и текущего пробега. Это покажет модель девальвации.\n4.  Сфокусируйтесь на регионах: Определите, в каком регионе (например, Asia) продажи растут быстрее всего, и какие модели/типы топлива там популярны. Это ключ к управлению запасами.\n5.  Проверьте гипотезу о \"премиум-сегменте\": Модели с большим объемом двигателя (Engine_Size_L до 5.0) могут демонстрировать иную динамику продаж и более высокую стабильность цены со временем.\n\nГлавный совет: Свяжите год выпуска не только с продажами, но и с другими параметрами (регион, тип топлива, модель), чтобы найти узкие, но прибыльные ниши."
+  ],
+  "progress": [
+    "describe",
+    "viz",
+    "combo"
+  ],
+  "brief": "Комбинированный анализ: качество + гипотезы + бизнес."
+}

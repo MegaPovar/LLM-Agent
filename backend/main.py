@@ -40,7 +40,7 @@ AGENTS = {
     "combo": ComboAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
 }
 
-PIPELINE_ORDER = ["describe", "stat", "viz", "combo"]
+PIPELINE_ORDER = ["describe", "viz", "combo"]
 
 # --- helpers ---
 def ctx_path_for(task_id: str) -> Path:

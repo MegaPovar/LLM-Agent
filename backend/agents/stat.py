@@ -5,7 +5,7 @@ from typing import Dict, List, Any, Tuple
 import warnings
 warnings.filterwarnings('ignore')
 
-class StatisticalAnalysisAgent:
+class StatAgent:
     """
     Агент статистического анализа для работы в агентной системе.
     Работает через function calling для выполнения статистических тестов.
