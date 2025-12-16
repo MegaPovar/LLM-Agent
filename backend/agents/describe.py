@@ -71,7 +71,7 @@ class DescribeAgent(AgentBase):
 ПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:
 - пропуски, выбросы, дубликаты, странные категории, несоответствия.
 
-ЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:
+НАЙДЕННЫЕ ВЗАИМОСВЯЗИ:
 - 3–6 направлений анализа (без лишней воды).
 
 ТРЕБОВАНИЯ К ФОРМАТУ:
@@ -95,6 +95,7 @@ class DescribeAgent(AgentBase):
             "temperature": 0.1,
             "max_tokens": 900,
         }
+
 
         try:
             response = requests.post(self.base_url, headers=headers, json=payload, timeout=60)
