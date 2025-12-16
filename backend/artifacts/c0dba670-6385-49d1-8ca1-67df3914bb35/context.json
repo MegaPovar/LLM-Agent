@@ -1,0 +1,183 @@
+{
+  "task_id": "c0dba670-6385-49d1-8ca1-67df3914bb35",
+  "prompt": "какие машини лучше продавались в зависмости от года пролади",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/c0dba670-6385-49d1-8ca1-67df3914bb35/20251210_122849_BMW%20sales%20data%20%282010-2024%29%20%281%29.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/c0dba670-6385-49d1-8ca1-67df3914bb35",
+    "artifacts": [
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/c0dba670-6385-49d1-8ca1-67df3914bb35/hist_Price_USD.png",
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/c0dba670-6385-49d1-8ca1-67df3914bb35/combo_report.txt"
+    ]
+  },
+  "meta": {},
+  "metrics": {
+    "quality_score": 10
+  },
+  "findings": {
+    "describe": {
+      "shape": [
+        50000,
+        11
+      ],
+      "columns": [
+        "Model",
+        "Year",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume",
+        "Sales_Classification"
+      ],
+      "data_types": {
+        "Model": "object",
+        "Year": "int64",
+        "Region": "object",
+        "Color": "object",
+        "Fuel_Type": "object",
+        "Transmission": "object",
+        "Engine_Size_L": "float64",
+        "Mileage_KM": "int64",
+        "Price_USD": "int64",
+        "Sales_Volume": "int64",
+        "Sales_Classification": "object"
+      },
+      "missing_values": {
+        "Model": 0,
+        "Year": 0,
+        "Region": 0,
+        "Color": 0,
+        "Fuel_Type": 0,
+        "Transmission": 0,
+        "Engine_Size_L": 0,
+        "Mileage_KM": 0,
+        "Price_USD": 0,
+        "Sales_Volume": 0,
+        "Sales_Classification": 0
+      },
+      "numeric_columns": [
+        "Year",
+        "Engine_Size_L",
+        "Mileage_KM",
+        "Price_USD",
+        "Sales_Volume"
+      ],
+      "categorical_columns": [
+        "Model",
+        "Region",
+        "Color",
+        "Fuel_Type",
+        "Transmission",
+        "Sales_Classification"
+      ],
+      "sample_data": [
+        {
+          "Model": "5 Series",
+          "Year": 2016,
+          "Region": "Asia",
+          "Color": "Red",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Manual",
+          "Engine_Size_L": 3.5,
+          "Mileage_KM": 151748,
+          "Price_USD": 98740,
+          "Sales_Volume": 8300,
+          "Sales_Classification": "High"
+        },
+        {
+          "Model": "i8",
+          "Year": 2013,
+          "Region": "North America",
+          "Color": "Red",
+          "Fuel_Type": "Hybrid",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.6,
+          "Mileage_KM": 121671,
+          "Price_USD": 79219,
+          "Sales_Volume": 3428,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "5 Series",
+          "Year": 2022,
+          "Region": "North America",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 4.5,
+          "Mileage_KM": 10991,
+          "Price_USD": 113265,
+          "Sales_Volume": 6994,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "X3",
+          "Year": 2024,
+          "Region": "Middle East",
+          "Color": "Blue",
+          "Fuel_Type": "Petrol",
+          "Transmission": "Automatic",
+          "Engine_Size_L": 1.7,
+          "Mileage_KM": 27255,
+          "Price_USD": 60971,
+          "Sales_Volume": 4047,
+          "Sales_Classification": "Low"
+        },
+        {
+          "Model": "7 Series",
+          "Year": 2020,
+          "Region": "South America",
+          "Color": "Black",
+          "Fuel_Type": "Diesel",
+          "Transmission": "Manual",
+          "Engine_Size_L": 2.1,
+          "Mileage_KM": 122131,
+          "Price_USD": 49898,
+          "Sales_Volume": 3080,
+          "Sales_Classification": "Low"
+        }
+      ]
+    },
+    "combo": {
+      "completeness": 1.0,
+      "quality_score": 10,
+      "potential_issues": [],
+      "duplicate_rows": 0,
+      "data_characteristics": {
+        "num_rows": 50000,
+        "num_columns": 11,
+        "numeric_columns": [
+          "Year",
+          "Engine_Size_L",
+          "Mileage_KM",
+          "Price_USD",
+          "Sales_Volume"
+        ],
+        "categorical_columns": [
+          "Model",
+          "Region",
+          "Color",
+          "Fuel_Type",
+          "Transmission",
+          "Sales_Classification"
+        ]
+      }
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию о продажах автомобилей, включая их характеристики, стоимость, пробег и объёмы продаж.\n- Набор данных состоит из 50000 строк и 11 столбцов.\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- В данных 11 столбцов: Model, Year, Region, Color, Fuel_Type, Transmission, Engine_Size_L, Mileage_KM, Price_USD, Sales_Volume, Sales_Classification.\n- 5 столбцов числовых: Year, Engine_Size_L, Mileage_KM, Price_USD, Sales_Volume.\n- 6 столбцов категориальных: Model, Region, Color, Fuel_Type, Transmission, Sales_Classification.\n- Пропущенных значений в данных нет, все поля имеют 0 пропусков.\n- Примеры данных включают модели автомобилей (5 Series, i8, X3, 7 Series), регионы (Asia, North America, Middle East, South America) и классификацию продаж (High, Low).\n- В примере данных год выпуска автомобилей варьируется от 2013 до 2024, а пробег - от 10991 до 151748 км.\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Пропущенных значений не обнаружено.\n- На основе предоставленных фактов невозможно оценить наличие выбросов, дубликатов или несоответствий в данных, так как статистика не предоставлена.\n- В предоставленном срезе данных присутствуют потенциально странные комбинации, например, модель 2024 года с пробегом 27255 км, что требует проверки на корректность.\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние характеристик автомобиля (год выпуска, объём двигателя, тип топлива, коробка передач) на его цену (Price_USD).\n- Распределение объёмов продаж (Sales_Volume) по регионам (Region) или моделям (Model).\n- Зависимость между пробегом (Mileage_KM) и ценой автомобиля (Price_USD).\n- Анализ того, как классификация продаж (Sales_Classification) соотносится с фактическим объёмом продаж (Sales_Volume) или ценой (Price_USD).\n- Сравнение средних цен или объёмов продаж для разных типов топлива (Fuel_Type) или трансмиссии (Transmission).\n- Исследование самых популярных цветов (Color) в разных регионах (Region).",
+    "Сгенерированы визуализации:\n- Гистограмма числового признака 'Price_USD' (bins=30), отмечена медиана.",
+    "Анализ данных показывает, что в зависимости от года продажи лучше всего продавались определенные модели. Данные охватывают период с 2010 по 2024 год. Чтобы дать точный ответ, необходимо провести кросс-табуляцию по полям \"Year\" и \"Model\", а также агрегировать \"Sales_Volume\" для каждой комбинации.\n\nНа основе предоставленной статистики можно сделать предварительные наблюдения:\n1.  Самые частые модели в датасете — это \"7 Series\" (4666 записей), что может косвенно указывать на высокий объем продаж или предложения.\n2.  Средний год выпуска/продажи — около 2017 года, с разбросом от 2010 до 2024.\n3.  Для точного ответа нужен расчет: например, в 2024 году лучше всего могли продаваться новейшие модели (например, \"X7\" или \"i7\"), а в 2010-2012 — модели предыдущих поколений (например, \"5 Series\" E60 или \"3 Series\" E90). Тренд, вероятно, показывает рост продаж кроссоверов (X-серии) в более поздние годы.\n\nБизнес-совет: Для понимания динамики постройте график \"Топ-3 модели по объему продаж для каждого года\". Это покажет смену потребительских предпочтений во времени. Также проверьте гипотезу о корреляции года выпуска и цены — новые модели могут продаваться в меньшем объеме, но по более высокой цене, что влияет на выручку.",
+    "Сгенерированы визуализации:\n- Гистограмма числового признака 'Price_USD' (bins=30), отмечена медиана."
+  ],
+  "progress": [
+    "describe",
+    "viz",
+    "combo",
+    "viz"
+  ],
+  "brief": "Визуализация датасета выполнена."
+}

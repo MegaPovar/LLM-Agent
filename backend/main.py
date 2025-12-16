@@ -16,6 +16,7 @@ sys.path.append(str(ROOT_DIR / "backend"))
 load_dotenv(ROOT_DIR / ".env")
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/chat/completions")
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
 # --- FastAPI app ---
 app = FastAPI(title="Multi-Agent Data Analysis API")
@@ -30,17 +31,19 @@ ARTIFACTS_DIR.mkdir(exist_ok=True, parents=True)
 # --- Agents ---
 from agents.describe import DescribeAgent
 from agents.stat import StatAgent
+from agents.rag import RAGAgent
 from agents.viz import VizAgent
 from agents.combo import ComboAgent
 
 AGENTS = {
     "describe": DescribeAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
     "stat": StatAgent(),
+    "rag": RAGAgent(apikey=DEEPSEEK_API_KEY, baseurl=DEEPSEEK_BASE_URL, tavily_api_key=TAVILY_API_KEY),
     "viz": VizAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
     "combo": ComboAgent(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL),
 }
 
-PIPELINE_ORDER = ["describe", "viz", "combo"]
+PIPELINE_ORDER = ["describe", "rag", "viz", "combo"]
 
 # --- helpers ---
 def ctx_path_for(task_id: str) -> Path:

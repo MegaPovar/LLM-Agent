@@ -1,0 +1,131 @@
+{
+  "task_id": "d697fe67-2cea-4da7-bf78-b949a927583f",
+  "prompt": "как колличесвто часов обучения влияет на результаты экзамена???",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/d697fe67-2cea-4da7-bf78-b949a927583f/20251210_124706_student_exam_scores.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/d697fe67-2cea-4da7-bf78-b949a927583f",
+    "artifacts": [
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/d697fe67-2cea-4da7-bf78-b949a927583f/scatter_hours_studied_vs_exam_score.png",
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/d697fe67-2cea-4da7-bf78-b949a927583f/combo_report.txt"
+    ]
+  },
+  "meta": {},
+  "metrics": {
+    "quality_score": 10
+  },
+  "findings": {
+    "describe": {
+      "shape": [
+        200,
+        6
+      ],
+      "columns": [
+        "student_id",
+        "hours_studied",
+        "sleep_hours",
+        "attendance_percent",
+        "previous_scores",
+        "exam_score"
+      ],
+      "data_types": {
+        "student_id": "object",
+        "hours_studied": "float64",
+        "sleep_hours": "float64",
+        "attendance_percent": "float64",
+        "previous_scores": "int64",
+        "exam_score": "float64"
+      },
+      "missing_values": {
+        "student_id": 0,
+        "hours_studied": 0,
+        "sleep_hours": 0,
+        "attendance_percent": 0,
+        "previous_scores": 0,
+        "exam_score": 0
+      },
+      "numeric_columns": [
+        "hours_studied",
+        "sleep_hours",
+        "attendance_percent",
+        "previous_scores",
+        "exam_score"
+      ],
+      "categorical_columns": [
+        "student_id"
+      ],
+      "sample_data": [
+        {
+          "student_id": "S001",
+          "hours_studied": 8.0,
+          "sleep_hours": 8.8,
+          "attendance_percent": 72.1,
+          "previous_scores": 45,
+          "exam_score": 30.2
+        },
+        {
+          "student_id": "S002",
+          "hours_studied": 1.3,
+          "sleep_hours": 8.6,
+          "attendance_percent": 60.7,
+          "previous_scores": 55,
+          "exam_score": 25.0
+        },
+        {
+          "student_id": "S003",
+          "hours_studied": 4.0,
+          "sleep_hours": 8.2,
+          "attendance_percent": 73.7,
+          "previous_scores": 86,
+          "exam_score": 35.8
+        },
+        {
+          "student_id": "S004",
+          "hours_studied": 3.5,
+          "sleep_hours": 4.8,
+          "attendance_percent": 95.1,
+          "previous_scores": 66,
+          "exam_score": 34.0
+        },
+        {
+          "student_id": "S005",
+          "hours_studied": 9.1,
+          "sleep_hours": 6.4,
+          "attendance_percent": 89.8,
+          "previous_scores": 71,
+          "exam_score": 40.3
+        }
+      ]
+    },
+    "combo": {
+      "completeness": 1.0,
+      "quality_score": 10,
+      "potential_issues": [],
+      "duplicate_rows": 0,
+      "data_characteristics": {
+        "num_rows": 200,
+        "num_columns": 6,
+        "numeric_columns": [
+          "hours_studied",
+          "sleep_hours",
+          "attendance_percent",
+          "previous_scores",
+          "exam_score"
+        ],
+        "categorical_columns": [
+          "student_id"
+        ]
+      }
+    }
+  },
+  "insights": [
+    "О ЧЁМ ДАТАСЕТ:\n- Данные содержат информацию об успеваемости студентов, включая время учебы, сон, посещаемость, предыдущие оценки и итоговый балл за экзамен.\n- Набор данных состоит из 200 строк (наблюдений) и 6 столбцов (признаков).\n\nКЛЮЧЕВЫЕ СИГНАЛЫ:\n- Всего 200 записей о студентах.\n- 6 столбцов: student_id, hours_studied, sleep_hours, attendance_percent, previous_scores, exam_score.\n- 5 числовых столбцов: hours_studied (float64), sleep_hours (float64), attendance_percent (float64), previous_scores (int64), exam_score (float64).\n- 1 категориальный столбец: student_id (object).\n- В примере данных: hours_studied от 1.3 до 9.1, sleep_hours от 4.8 до 8.8, attendance_percent от 60.7 до 95.1, previous_scores от 45 до 86, exam_score от 25.0 до 40.3.\n\nПРОБЛЕМЫ / РИСКИ КАЧЕСТВА:\n- Пропуски в данных отсутствуют во всех столбцах (0 missing values).\n- На основе предоставленных данных невозможно оценить наличие выбросов, дубликатов или несоответствий типов, так как статистический анализ не представлен.\n\nЧТО МОЖНО ПРОАНАЛИЗИРОВАТЬ ДАЛЬШЕ:\n- Влияние часов учебы, сна и посещаемости на итоговый экзаменационный балл.\n- Корреляцию между предыдущими оценками (previous_scores) и результатом экзамена (exam_score).\n- Определение ключевых факторов, наиболее сильно связанных с успеваемостью.\n- Кластеризацию студентов на основе их учебных привычек и успеваемости.\n- Построение прогнозной модели для оценки результата экзамена на основе остальных признаков.\n- Анализ распределения значений по каждому числовому признаку.",
+    "Сгенерированы визуализации:\n- Точечная диаграмма 'hours_studied' vs 'exam_score' (с лёгким семплированием при больших объёмах данных).",
+    "Количество часов обучения положительно влияет на результаты экзамена. Это очевидная и тривиальная гипотеза, которую можно подтвердить статистически, рассчитав корреляцию между hours_studied и exam_score. Данные качественные, пропусков и дубликатов нет. Однако влияние не единственное. Для более глубокого анализа рекомендую: 1) Исследовать совместное влияние часов учебы и предыдущих оценок (previous_scores) — возможно, для сильных студентов дополнительная подготовка дает меньший прирост. 2) Проверить, существует ли оптимальный баланс между часами учебы (hours_studied) и часами сна (sleep_hours), так как переутомление может снижать эффективность. 3) Проанализировать, как посещаемость (attendance_percent) модерарирует связь между самостоятельной подготовкой и итоговым баллом. Ключевая бизнес-метрика — эффективность учебного времени, а не его объем."
+  ],
+  "progress": [
+    "describe",
+    "viz",
+    "combo"
+  ],
+  "brief": "Комбинированный анализ: качество + гипотезы + бизнес."
+}

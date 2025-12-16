@@ -1,0 +1,131 @@
+{
+  "task_id": "2ae38b1a-470a-4ac2-a2e3-48091945ddd0",
+  "prompt": "ничо не хочу писать",
+  "files": {
+    "dataset": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/2ae38b1a-470a-4ac2-a2e3-48091945ddd0/20251210_124450_student_exam_scores.xlsx",
+    "out_dir": "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/2ae38b1a-470a-4ac2-a2e3-48091945ddd0",
+    "artifacts": [
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/2ae38b1a-470a-4ac2-a2e3-48091945ddd0/hist_hours_studied.png",
+      "/Users/egor/Desktop/cnn/LLM-Agent/backend/artifacts/2ae38b1a-470a-4ac2-a2e3-48091945ddd0/combo_report.txt"
+    ]
+  },
+  "meta": {},
+  "metrics": {
+    "quality_score": 10
+  },
+  "findings": {
+    "describe": {
+      "shape": [
+        200,
+        6
+      ],
+      "columns": [
+        "student_id",
+        "hours_studied",
+        "sleep_hours",
+        "attendance_percent",
+        "previous_scores",
+        "exam_score"
+      ],
+      "data_types": {
+        "student_id": "object",
+        "hours_studied": "float64",
+        "sleep_hours": "float64",
+        "attendance_percent": "float64",
+        "previous_scores": "int64",
+        "exam_score": "float64"
+      },
+      "missing_values": {
+        "student_id": 0,
+        "hours_studied": 0,
+        "sleep_hours": 0,
+        "attendance_percent": 0,
+        "previous_scores": 0,
+        "exam_score": 0
+      },
+      "numeric_columns": [
+        "hours_studied",
+        "sleep_hours",
+        "attendance_percent",
+        "previous_scores",
+        "exam_score"
+      ],
+      "categorical_columns": [
+        "student_id"
+      ],
+      "sample_data": [
+        {
+          "student_id": "S001",
+          "hours_studied": 8.0,
+          "sleep_hours": 8.8,
+          "attendance_percent": 72.1,
+          "previous_scores": 45,
+          "exam_score": 30.2
+        },
+        {
+          "student_id": "S002",
+          "hours_studied": 1.3,
+          "sleep_hours": 8.6,
+          "attendance_percent": 60.7,
+          "previous_scores": 55,
+          "exam_score": 25.0
+        },
+        {
+          "student_id": "S003",
+          "hours_studied": 4.0,
+          "sleep_hours": 8.2,
+          "attendance_percent": 73.7,
+          "previous_scores": 86,
+          "exam_score": 35.8
+        },
+        {
+          "student_id": "S004",
+          "hours_studied": 3.5,
+          "sleep_hours": 4.8,
+          "attendance_percent": 95.1,
+          "previous_scores": 66,
+          "exam_score": 34.0
+        },
+        {
+          "student_id": "S005",
+          "hours_studied": 9.1,
+          "sleep_hours": 6.4,
+          "attendance_percent": 89.8,
+          "previous_scores": 71,
+          "exam_score": 40.3
+        }
+      ]
+    },
+    "combo": {
+      "completeness": 1.0,
+      "quality_score": 10,
+      "potential_issues": [],
+      "duplicate_rows": 0,
+      "data_characteristics": {
+        "num_rows": 200,
+        "num_columns": 6,
+        "numeric_columns": [
+          "hours_studied",
+          "sleep_hours",
+          "attendance_percent",
+          "previous_scores",
+          "exam_score"
+        ],
+        "categorical_columns": [
+          "student_id"
+        ]
+      }
+    }
+  },
+  "insights": [
+    "<b>О чём датасет</b>\n• 200 строк(и), 6 колонок (student_id, hours_studied, sleep_hours, attendance_percent, previous_scores, exam_score).\n\n<b>Ключевые сигналы из данных</b>\n• Числовые: ['hours_studied', 'sleep_hours', 'attendance_percent', 'previous_scores', 'exam_score']\n• Категориальные: ['student_id']\n• Пропуски по колонкам: часть полей может содержать пропуски\n\n<b>Что считать дальше</b>\n• Корреляции по числовым, частоты по категориям, проверка выбросов, графики распределений.",
+    "Сгенерированы визуализации:\n- LLM не сработал, но построена базовая гистограмма по 'hours_studied'. Ошибка: HTTPSConnectionPool(host='api.deepseek.com', port=443): Max retries exceeded with url: /chat/completions (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 503 Service Unavailable')))",
+    "1) Качество данных отличное: 200 строк, 6 столбцов, нет пропусков и дубликатов. Все числовые переменные имеют реалистичные диапазоны (часы учебы 1-12, сон 4-9, посещаемость 50-100%, баллы 17-51). Аномалий не видно. Данные готовы для анализа.\n\n2) Гипотезы о влиянии часов учебы, посещаемости и предыдущих оценок на экзаменационный балл будут тривиальны и очевидны — они почти наверняка подтвердятся. Более интересна гипотеза о влиянии часов сна: есть ли оптимальный диапазон (например, 7-8 часов), при котором результаты лучше, и ухудшаются ли они при недосыпе (<6 часов) или пересыпе (>9 часов). Также стоит проверить взаимодействие факторов: например, высокая посещаемость при низком времени учебы может давать меньший эффект.\n\n3) Бизнес-советы: сфокусируйтесь на поиске оптимального баланса между учебой и отдыхом. Постройте модель, предсказывающую exam_score, чтобы выделить ключевые драйверы. Исследуйте, как комбинация attendance_percent и hours_studied влияет на результат — возможно, есть порог посещаемости, после которого дополнительные часы учебы дают diminishing returns. Проверьте, есть ли группы студентов (например, по уровню previous_scores), для которых сон или посещаемость критичнее. Это поможет давать персонализированные рекомендации."
+  ],
+  "progress": [
+    "describe",
+    "viz",
+    "combo"
+  ],
+  "brief": "Комбинированный анализ: качество + гипотезы + бизнес."
+}

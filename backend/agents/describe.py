@@ -11,17 +11,38 @@ class DescribeAgent(AgentBase):
         self.base_url = base_url
 
     def get_dataframe_info(self, df: pd.DataFrame) -> dict:
-        numeric_columns = df.select_dtypes(include="number").columns.tolist()
-        categorical_columns = df.select_dtypes(exclude="number").columns.tolist()
-        return {
-            "shape": tuple(map(int, df.shape)),
-            "columns": list(df.columns),
-            "data_types": df.dtypes.astype(str).to_dict(),
-            "missing_values": df.isnull().sum().astype(int).to_dict(),
-            "numeric_columns": numeric_columns,
-            "categorical_columns": categorical_columns,
-            "sample_data": df.head(5).to_dict("records"),
+        numericcolumns = df.select_dtypes(include="number").columns.tolist()
+        categoricalcolumns = df.select_dtypes(exclude="number").columns.tolist()
+
+        # Приводим всё к JSON‑дружелюбным типам
+        dataframeinfo = {
+            "shape": [int(df.shape[0]), int(df.shape[1])],
+            "columns": [str(c) for c in df.columns],
+            "datatypes": {str(k): str(v) for k, v in df.dtypes.items()},
+            "missingvalues": {str(k): int(v) for k, v in df.isnull().sum().items()},
+            "numericcolumns": [str(c) for c in numericcolumns],
+            "categoricalcolumns": [str(c) for c in categoricalcolumns],
+            "sampledata": [],
         }
+
+        # 5 строк примера, всё, что не примитив — в строку
+        for row in df.head(5).to_dict(orient="records"):
+            clean_row = {}
+            for k, v in row.items():
+                if isinstance(v, (int, float, bool)) or v is None:
+                    clean_row[str(k)] = v
+                else:
+                    # Timestamp, datetime, категориальные и прочее → строка
+                    clean_row[str(k)] = str(v)
+            dataframeinfo["sampledata"].append(clean_row)
+
+        return dataframeinfo
+
+    def _to_jsonable(obj):
+        if isinstance(obj, (pd.Timestamp, )):
+            return obj.isoformat()
+    # можно добавить другие типы при необходимости
+        return str(obj)
 
     def analyze_dataframe(self, dataframe_info: dict, stat_results: dict | None = None) -> str:
         # Жёсткий промпт + формат под Telegram-HTML
